@@ -14,14 +14,24 @@
         <source src="@/assets/videos/tug_of_war.mp4" type="video/mp4">
       </video>
 
-      <!-- Overlay (middle layer) -->
-      <div 
-        class="overlay" 
-        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.0); z-index: 2;"
-      ></div>
+      <!-- Left Side Navigation -->
+      <div style="position: fixed; left: 20px; top: 50%; transform: translateY(-50%); z-index: 11;">
+        <v-btn
+          v-for="(item, index) in navigationItems"
+          :key="index"
+          text
+          block
+          class="mb-2 left-nav-btn"
+          @click="scrollToSection(item.target)"
+          style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(5px);"
+        >
+          <v-icon left>{{ item.icon }}</v-icon>
+          {{ item.text }}
+        </v-btn>
+      </div>
 
       <!-- Hero Content Wrapper (top layer) -->
-      <div style="position: relative; z-index: 5; height: 100%;">
+      <div style="position: relative; z-index: 3; height: 100%;">
         <slot name="hero-content"></slot>
       </div>
 
@@ -31,45 +41,47 @@
         flat
         transparent
         class="hidden-sm-and-down"
-        style="z-index: 4;"
+        style="z-index: 10;"
       >
         <v-spacer></v-spacer>
-        <v-btn
-          text
-          color="black"
-          href="#"
-          class="mx-2"
-        >
-          <v-icon left>mdi-file-pdf-box</v-icon>
-          Paper
-        </v-btn>
-        <v-btn
-          text
-          color="black"
-          href="#"
-          class="mx-2"
-        >
-          <v-icon left>mdi-file-document</v-icon>
-          arXiv
-        </v-btn>
-        <v-btn
-          text
-          color="black"
-          href="#"
-          class="mx-2"
-        >
-          <v-icon left>mdi-youtube</v-icon>
-          Video
-        </v-btn>
-        <v-btn
-          outlined
-          color="black"
-          href="#"
-          class="mx-2"
-        >
-          <v-icon left>mdi-github</v-icon>
-          Code
-        </v-btn>
+        <div style="position: absolute; top: 20px; right: 20px;">
+          <v-btn
+            href="https://github.com"
+            target="_blank"
+            text
+            style="position: relative; z-index: 11;"
+          >
+            <v-icon left>mdi-file-pdf-box</v-icon>
+            PAPER
+          </v-btn>
+          <v-btn
+            href="https://github.com"
+            target="_blank"
+            text
+            style="position: relative; z-index: 11;"
+          >
+            <v-icon left>mdi-file-document</v-icon>
+            ARXIV
+          </v-btn>
+          <v-btn
+            href="https://github.com"
+            target="_blank"
+            text
+            style="position: relative; z-index: 11;"
+          >
+            <v-icon left>mdi-video</v-icon>
+            VIDEO
+          </v-btn>
+          <v-btn
+            href="https://github.com"
+            target="_blank"
+            text
+            style="position: relative; z-index: 11;"
+          >
+            <v-icon left>mdi-github</v-icon>
+            CODE
+          </v-btn>
+        </div>
       </v-app-bar>
 
       <!-- Bottom Navigation -->
@@ -109,7 +121,30 @@
 
 <script>
 export default {
-  name: 'MainLayout'
+  name: 'MainLayout',
+  data() {
+    return {
+      navigationItems: [
+        { text: 'Introduction', icon: 'mdi-information', target: 'introduction' },
+        { text: 'Method', icon: 'mdi-cog', target: 'method' },
+        { text: 'Simulation', icon: 'mdi-video', target: 'simulation' },
+        { text: 'Results', icon: 'mdi-chart-bar', target: 'real-world' },
+        { text: 'Ablation', icon: 'mdi-microscope', target: 'ablation' },
+        { text: 'Team', icon: 'mdi-account-group', target: 'team' }
+      ]
+    }
+  },
+  methods: {
+    scrollToSection(target) {
+      const element = document.getElementById(target);
+      if (element) {
+        element.scrollIntoView({ 
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    }
+  }
 }
 </script>
 
@@ -120,6 +155,21 @@ export default {
 
 .hero-background {
   transition: background 0.5s ease;
+}
+
+.left-nav-btn {
+  min-width: 150px;
+  text-align: left !important;
+  justify-content: flex-start !important;
+  transition: all 0.3s ease;
+  opacity: 0.7;  /* Make buttons slightly transparent by default */
+}
+
+.left-nav-btn:hover {
+  background: rgba(255, 255, 255, 0.9) !important;
+  color: black !important;
+  transform: translateX(5px);
+  opacity: 1;  /* Full opacity on hover */
 }
 
 /* Add more custom styles as needed */
