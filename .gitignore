@@ -1,6 +1,5 @@
 # Dependencies
 /node_modules
-/dist
 
 # IDE - VSCode
 .vscode/*
@@ -36,7 +35,6 @@ Thumbs.db
 *.sw?
 
 # Build files
-/dist
 /build
 
 # Cache
