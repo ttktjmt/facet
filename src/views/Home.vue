@@ -31,7 +31,7 @@
                 <!-- Hero Content -->
                 <v-container class="d-flex flex-column justify-center align-center text-center" style="height: 100%;">
                     <h1 style="font-size: 2000%; line-height: 0.95; user-select: none; -webkit-user-select: none; -ms-user-select: none;"
-                        class="font-weight-light mb-4 text-white text-shadow">FACET
+                        class="font-weight-light mb-4 text-white text-shadow"><em>FACET</em>
                     </h1>
                     <h2 class="text-h2 font-weight-light mb-4 text-white text-shadow">
                         <strong><em>F</em></strong>orce-<strong><em>A</em></strong>daptive
@@ -61,8 +61,14 @@
                 <v-col cols="12" md="10">
                     <p class="text-h4 text-center mb-6">Introduction</p>
 
+                    <v-row justify="center">
+                        <v-col cols="12" md="12" lg="8">
+                            <v-img src="@/assets/images/head.drawio.png" contain></v-img>
+                        </v-col>
+                    </v-row>
+
                     <v-row>
-                        <v-col cols="12" md="12" lg="6">
+                        <v-col cols="12" md="12">
                             <div class="text-body-1">
                                 <p class="mb-4">
                                     Recent advances in reinforcement learning (RL) for robotics have shown
@@ -96,37 +102,38 @@
                                 </p>
                             </div>
                         </v-col>
-                        <v-col cols="12" md="12" lg="6">
-                            <v-img src="@/assets/images/head.drawio.png" contain></v-img>
-                        </v-col>
                     </v-row>
                 </v-col>
             </v-row>
 
             <v-row justify="center">
                 <v-col cols="12" md="10" class="text-body-1">
-                    <p class="mb-4">
-                        Key Capabilities:
-                    </p>
-                    <v-list>
-                        <v-list-item>
-                            <v-icon color="primary" class="mr-2">mdi-shield-check</v-icon>
-                            <span>Enhanced Safety: Responds naturally to external forces, reducing collision impacts by
-                                up to
-                                80%</span>
-                        </v-list-item>
-                        <v-list-item>
-                            <v-icon color="primary" class="mr-2">mdi-arm-flex</v-icon>
-                            <span>Adaptive Strength: Handles significant forces - from gentle guidance to pulling 10kg
-                                loads</span>
-                        </v-list-item>
-                        <v-list-item>
-                            <v-icon color="primary" class="mr-2">mdi-robot</v-icon>
-                            <span>Versatile Application: Successfully implemented across quadrupeds, humanoids, and
-                                loco-manipulator
-                                systems</span>
-                        </v-list-item>
-                    </v-list>
+                    <v-sheet color="rgb(210, 227, 252)" class="pa-4">
+                        <p class="mb-4">
+                            Key Capabilities:
+                        </p>
+                        <v-list bg-color="transparent">
+                            <v-list-item>
+                                <v-icon color="primary" class="mr-2">mdi-shield-check</v-icon>
+                                <span>Enhanced Safety: Responds naturally to external forces, reducing collision impacts
+                                    by
+                                    up to
+                                    80%</span>
+                            </v-list-item>
+                            <v-list-item>
+                                <v-icon color="primary" class="mr-2">mdi-arm-flex</v-icon>
+                                <span>Adaptive Strength: Handles significant forces - from gentle guidance to pulling
+                                    10kg
+                                    loads</span>
+                            </v-list-item>
+                            <v-list-item>
+                                <v-icon color="primary" class="mr-2">mdi-robot</v-icon>
+                                <span>Versatile Application: Successfully implemented across quadrupeds, humanoids, and
+                                    loco-manipulator
+                                    systems</span>
+                            </v-list-item>
+                        </v-list>
+                    </v-sheet>
 
                     <!-- Technical Summary Video -->
                     <v-sheet color="grey lighten-2" class="d-flex align-center justify-center mt-6">
@@ -151,13 +158,12 @@
                                     <v-img src="@/assets/videos/imp_ctrl.gif" height="300px" contain
                                         class="grey lighten-3" />
                                 </template>
-                                <template #title>Impedance Control</template>
+                                <template #title>Impedance Control for Fixed-Base Manipulators</template>
                                 <template #subtitle>
-                                    Control a robot like a mass connected to a spring - it flexes with external forces
-                                    and returns
-                                    to position
+                                    <strong>FACET</strong> is inspired by impedance control, which controls a robot like
+                                    a mass connected to a spring - it flexes with external forces
+                                    and returns to position
                                 </template>
-                                <!-- 默认插槽内容直接写在这里 -->
                                 <p>Imagine controlling a robot like you're handling a mass connected to a spring: you
                                     drag
                                     around the
@@ -174,10 +180,9 @@
                                     applied.</p>
                                 <vue-mathjax formula="$f_{spring} = K_p(x_{des} - x) + K_d(\dot{x}_{des} - \dot{x})$"
                                     class="text-center my-2" />
-                                <p>where <vue-mathjax formula="$K_p$" /> is spring stiffness (how "rigid" the robot
-                                    feels),
-                                    <vue-mathjax formula="$K_d$" /> is damping (how quickly oscillations settle), and
-                                    <vue-mathjax formula="$x_{des}, \dot{x}_{des}$" /> are desired position and
+                                <p>where <vue-mathjax formula="$K_p$" /> is spring stiffness,
+                                    <vue-mathjax formula="$K_d$" /> is damping, and
+                                    <vue-mathjax formula="$\mathbf{x}_{des}, \dot{\mathbf{x}}_{des}$" /> are desired position and
                                     velocity.
                                 </p>
                             </ExpansionCard>
@@ -190,10 +195,11 @@
                                     <v-img src="@/assets/images/method-left.drawio.png" height="300px" contain
                                         class="grey lighten-3" />
                                 </template>
-                                <template #title>Reference Model Tracking</template>
+                                <template #title>Impedance Reference Model Tracking</template>
                                 <template #subtitle>
-                                    FACET uses a virtual mass-spring-damper system as reference for the robot's center
-                                    of mass motion
+                                    <strong>FACET</strong> uses a virtual mass-spring-damper system as
+                                    a reference model to guide the robot's center of mass motion - the robot learns to
+                                    imitate this reference model
                                 </template>
                                 <p><strong>FACET</strong> leverages a virtual mass-spring-damper system as a reference
                                     model to
@@ -221,22 +227,38 @@
                                         class="grey lighten-3" />
                                 </template>
                                 <template #title>Temporal Smoothing</template>
-                                <template #subtitle>Balancing open-loop and closed-loop tracking for better performance
-                                    and
-                                    robustness</template>
-                                <p><strong>FACET</strong> uses temporal smoothing to balance between open-loop and
+                                <template #subtitle><strong>FACET</strong> uses temporal smoothing to balance between
+                                    open-loop and
                                     closed-loop
-                                    tracking of the reference model.</p>
+                                    tracking of the reference model.</template>
+                                <p>Concretely, the reference state at time <vue-mathjax formula="$t$" /> is obtained by
+                                    integrating from an
+                                    initial time <vue-mathjax formula="$t'$" />:</p>
                                 <vue-mathjax :block="true"
                                     formula="\begin{cases} \mathbf{x}_{\text{ref}}(t) = \mathbf{x}_{\text{sim}}(t') + \int_{t'}^t \dot{\mathbf{x}}_{\text{ref}}(t)dt \\ \dot{\mathbf{x}}_{\text{ref}}(t) = \dot{\mathbf{x}}_{\text{sim}}(t') + \int_{t'}^t \ddot{\mathbf{x}}_{\text{ref}}(t)dt \end{cases}"
                                     class="text-center mb-4" />
-                                <p>This approach addresses key challenges: open-loop tracking follows ideal dynamics but
-                                    ignores
-                                    physical constraints, while closed-loop tracking is adaptive but can be noisy.</p>
-                                <p>The final reward combines multiple tracking targets from different starting points
-                                    for more
-                                    robust
-                                    learning.</p>
+                                <p>This approach addresses key challenges:
+                                <ul class="pa-4">
+                                    <li>Open-loop tracking (<vue-mathjax formula="$t' = 0$" />) follows ideal dynamics
+                                        but ignores physical
+                                        constraints, leading to diverging tracking targets that are hard to follow,
+                                    </li>
+                                    <li>closed-loop tracking (<vue-mathjax formula="$t' = t - \Delta t$" />) is adaptive
+                                        but can be noisy.</li>
+                                </ul>
+                                </p>
+                                <p class="mb-4">
+                                    The final reward combines multiple tracking targets from different starting points <vue-mathjax
+                                        formula="$t'$" />:
+                                </p>
+                                <vue-mathjax :block="true"
+                                    formula="$r_t  = \frac{1}{M} \sum_{t'} \exp(-||\mathbf{x}_{\text{sim}}(t) - \mathbf{x}^{t'}_{\text{ref}}(t)||^2_2) \\
+                                        \; \; \; + \exp(-||\dot{\mathbf{x}}_{\text{sim}}(t) - \dot{\mathbf{x}}^{t'}_{\text{ref}}(t)||^2_2)$"
+                                    class="text-center mb-2" />
+                                <p>
+                                    , where <vue-mathjax formula="$t' \in \{t-8\Delta t, t-16\Delta t, t-32\Delta t\}$" /> in our implementation,
+                                    with <vue-mathjax formula="$\Delta t = 0.02s$" /> being the control interval.
+                                </p>
                             </ExpansionCard>
                         </v-col>
 
@@ -248,13 +270,12 @@
                                         class="grey lighten-3" />
                                 </template>
                                 <template #title>Teacher-Student Training</template>
-                                <template #subtitle>Two-stage training approach for successful sim2real transfer with
-                                    imperfect state
-                                    estimation</template>
-                                <p><strong>FACET</strong> uses a two-stage teacher-student training approach to
+                                <template #subtitle>
+                                <strong>FACET</strong> uses a two-stage teacher-student training approach to
                                     facilitate
                                     learning
-                                    and successful sim2real transfer.</p>
+                                    and successful sim2real transfer.
+                                </template>
                                 <p>In the first stage, we train a teacher policy <vue-mathjax
                                         formula="$\pi^{\text{teacher}}$" /> with
                                     access to privileged information alongside a state estimator <vue-mathjax
