@@ -1,0 +1,770 @@
+<template>
+    <v-app>
+        <!-- Hero Section -->
+        <v-container fluid class="hero-section pa-0" style="height: 100vh; position: relative;">
+            <!-- Video Background (bottom layer) -->
+            <video playsinline autoplay muted loop class="hero-video"
+                style="position: absolute; min-width: 100%; min-height: 100%; width: auto; height: auto; z-index: 1;">
+                <source src="@/assets/videos/tug_of_war.mp4" type="video/mp4">
+            </video>
+
+            <!-- Left Side Navigation -->
+            <div style="position: fixed; left: 20px; top: 50%; transform: translateY(-50%); z-index: 11;">
+                <v-btn v-for="(item, index) in navigationItems" :key="index" text block
+                    class="mb-2 nav-btn left-nav-btn" @click="scrollToSection(item.target)">
+                    <v-icon left>{{ item.icon }}</v-icon>
+                    {{ item.text }}
+                </v-btn>
+            </div>
+
+            <!-- Live Demo Button -->
+            <div class="hero-cta" @click="openLiveDemo">
+                <div class="gradient-mask"></div>
+                <div class="cta-content">
+                    <v-icon class="arrow-icon" large>mdi-arrow-right-bold</v-icon>
+                    <span class="cta-text">Try Live Demo</span>
+                </div>
+            </div>
+
+            <!-- Hero Content Wrapper (top layer) -->
+            <div style="position: relative; z-index: 3; height: 100%;">
+                <!-- Hero Content -->
+                <v-container class="d-flex flex-column justify-center align-center text-center" style="height: 100%;">
+                    <h1 style="font-size: 2000%; line-height: 0.95; user-select: none; -webkit-user-select: none; -ms-user-select: none;"
+                        class="font-weight-light mb-4 text-white text-shadow">FACET
+                    </h1>
+                    <h2 class="text-h2 font-weight-light mb-4 text-white text-shadow">
+                        <strong><em>F</em></strong>orce-<strong><em>A</em></strong>daptive
+                        <strong><em>C</em></strong>ontrol
+                        via
+                        Imp<strong><em>e</em></strong>dance<br /> <strong><em>R</em></strong>eference
+                        <strong><em>T</em></strong>racking for
+                        Legged Robots
+                    </h2>
+                    <!-- <p class="text-h5">Enabling Natural and Safe Robot Interactions Through Advanced Control</p> -->
+                </v-container>
+            </div>
+
+            <!-- Header -->
+            <div style="position: fixed; top: 20px; right: 20px; z-index: 10;">
+                <v-btn v-for="(link, index) in headerLinks" :key="index" :href="link.href" target="_blank" text
+                    class="nav-btn header-nav-btn mx-1">
+                    <v-icon left>{{ link.icon }}</v-icon>
+                    {{ link.text }}
+                </v-btn>
+            </div>
+        </v-container>
+
+        <!-- Introduction Section -->
+        <v-container class="py-12" id="introduction">
+            <v-row justify="center">
+                <v-col cols="12" md="10">
+                    <p class="text-h4 text-center mb-6">Introduction</p>
+
+                    <v-row>
+                        <v-col cols="12" md="12" lg="6">
+                            <div class="text-body-1">
+                                <p class="mb-4">
+                                    Recent advances in reinforcement learning (RL) for robotics have shown
+                                    incredibly agile movements such as parkour, dancing.
+                                    However, most control policies overlook one crucial aspect:
+                                    responding adaptively and compliantly to external forces during object manipulation
+                                    and
+                                    human
+                                    interaction.
+                                </p>
+                                <p class="mb-4">
+                                    <strong>FACET</strong> introduces a framework for force-adaptive control of legged
+                                    robots.
+                                    Inspired by impedance control, <strong>FACET</strong> trains a control policy to
+                                    imitate
+                                    a virtual mass-spring-damper system with RL,
+                                    allowing fine-grained control under external forces by manipulating the virtual
+                                    spring,
+                                    and smoothly transition between compliant behavior and forceful actions.
+                                </p>
+                                <p class="mb-4">
+                                    Such intuitive interface enables a wide range of applications. A high compliance
+                                    allows the
+                                    robot to
+                                    be stopped or kinesthetically guided
+                                    with ease (a), while a high stiffness allows the robot to exert large forces when
+                                    pushing/pulling a
+                                    payload (b). The framework applies to different morphologies and more complex
+                                    configurations
+                                    (c).
+                                </p>
+                            </div>
+                        </v-col>
+                        <v-col cols="12" md="12" lg="6">
+                            <v-img src="@/assets/images/head.drawio.png" contain></v-img>
+                        </v-col>
+                    </v-row>
+                </v-col>
+            </v-row>
+
+            <v-row justify="center">
+                <v-col cols="12" md="10" class="text-body-1">
+                    <p class="mb-4">
+                        Key Capabilities:
+                    </p>
+                    <v-list>
+                        <v-list-item>
+                            <v-icon color="primary" class="mr-2">mdi-shield-check</v-icon>
+                            <span>Enhanced Safety: Responds naturally to external forces, reducing collision impacts by
+                                up to
+                                80%</span>
+                        </v-list-item>
+                        <v-list-item>
+                            <v-icon color="primary" class="mr-2">mdi-arm-flex</v-icon>
+                            <span>Adaptive Strength: Handles significant forces - from gentle guidance to pulling 10kg
+                                loads</span>
+                        </v-list-item>
+                        <v-list-item>
+                            <v-icon color="primary" class="mr-2">mdi-robot</v-icon>
+                            <span>Versatile Application: Successfully implemented across quadrupeds, humanoids, and
+                                loco-manipulator
+                                systems</span>
+                        </v-list-item>
+                    </v-list>
+
+                    <!-- Technical Summary Video -->
+                    <v-sheet color="grey lighten-2" class="d-flex align-center justify-center mt-6">
+                        <video width="100%" height="100%" controls style="max-height: 100%">
+                            <source src="@/assets/videos/tug_of_war.mp4" type="video/mp4">
+                        </video>
+                    </v-sheet>
+                </v-col>
+            </v-row>
+        </v-container>
+
+        <!-- Method Section -->
+        <v-container class="py-12 grey lighten-4" id="method">
+            <v-row justify="center">
+                <v-col cols="12" md="10">
+                    <h2 class="text-h4 text-center mb-6">Method</h2>
+                    <v-row>
+                        <!-- Impedance Control Card -->
+                        <v-col cols="12" sm="6" md="6">
+                            <ExpansionCard v-model:expanded="expanded">
+                                <template #media>
+                                    <v-img src="@/assets/videos/imp_ctrl.gif" height="300px" contain
+                                        class="grey lighten-3" />
+                                </template>
+                                <template #title>Impedance Control</template>
+                                <template #subtitle>
+                                    Control a robot like a mass connected to a spring - it flexes with external forces
+                                    and returns
+                                    to position
+                                </template>
+                                <!-- 默认插槽内容直接写在这里 -->
+                                <p>Imagine controlling a robot like you're handling a mass connected to a spring: you
+                                    drag
+                                    around the
+                                    other end of the spring, and the mass moves in response. When external forces are
+                                    applied,
+                                    the mass
+                                    will move in the opposite direction of the force, and the spring will push back.</p>
+                                <p>The input to an impedance controller is the specifications for a virtual
+                                    mass-spring-damper
+                                    system.
+                                    The robot acts as if tethered to a virtual spring - it can flex and adapt when
+                                    external
+                                    forces are
+                                    applied.</p>
+                                <vue-mathjax formula="$f_{spring} = K_p(x_{des} - x) + K_d(\dot{x}_{des} - \dot{x})$"
+                                    class="text-center my-2" />
+                                <p>where <vue-mathjax formula="$K_p$" /> is spring stiffness (how "rigid" the robot
+                                    feels),
+                                    <vue-mathjax formula="$K_d$" /> is damping (how quickly oscillations settle), and
+                                    <vue-mathjax formula="$x_{des}, \dot{x}_{des}$" /> are desired position and
+                                    velocity.
+                                </p>
+                            </ExpansionCard>
+                        </v-col>
+
+                        <!-- Reference Model Tracking Card -->
+                        <v-col cols="12" sm="6" md="6">
+                            <ExpansionCard v-model:expanded="expanded">
+                                <template #media>
+                                    <v-img src="@/assets/images/method-left.drawio.png" height="300px" contain
+                                        class="grey lighten-3" />
+                                </template>
+                                <template #title>Reference Model Tracking</template>
+                                <template #subtitle>
+                                    FACET uses a virtual mass-spring-damper system as reference for the robot's center
+                                    of mass motion
+                                </template>
+                                <p><strong>FACET</strong> leverages a virtual mass-spring-damper system as a reference
+                                    model to
+                                    guide
+                                    the robot's center of mass (CoM) motion.</p>
+                                <p>This model defines how the robot should respond to external forces - maintaining a
+                                    "soft"
+                                    tracking
+                                    of its target position while naturally responding to forces.</p>
+                                <vue-mathjax
+                                    formula="$m\ddot{\mathbf{x}}_{\text{ref}} = K_p(\mathbf{x}_{\text{des}} - \mathbf{x}_{\text{ref}}) + K_d(\dot{\mathbf{x}}_{\text{des}} - \dot{\mathbf{x}}_{\text{ref}}) + f_{\text{ext}}$"
+                                    class="text-center my-4" />
+                                <p>The robot learns to match this reference behavior through reinforcement learning,
+                                    enabling
+                                    control
+                                    of the robot's CoM behavior by manipulating the virtual spring.</p>
+                            </ExpansionCard>
+                        </v-col>
+
+                        <!-- Temporal Smoothing Card -->
+                        <v-col cols="12" sm="6" md="6">
+                            <ExpansionCard v-model:expanded="expanded">
+                                <template #media>
+                                    <v-img src="@/assets/images/method-right.drawio.png" height="300px" contain
+                                        class="grey lighten-3" />
+                                </template>
+                                <template #title>Temporal Smoothing</template>
+                                <template #subtitle>Balancing open-loop and closed-loop tracking for better performance
+                                    and
+                                    robustness</template>
+                                <p><strong>FACET</strong> uses temporal smoothing to balance between open-loop and
+                                    closed-loop
+                                    tracking of the reference model.</p>
+                                <vue-mathjax :block="true"
+                                    formula="\begin{cases} \mathbf{x}_{\text{ref}}(t) = \mathbf{x}_{\text{sim}}(t') + \int_{t'}^t \dot{\mathbf{x}}_{\text{ref}}(t)dt \\ \dot{\mathbf{x}}_{\text{ref}}(t) = \dot{\mathbf{x}}_{\text{sim}}(t') + \int_{t'}^t \ddot{\mathbf{x}}_{\text{ref}}(t)dt \end{cases}"
+                                    class="text-center mb-4" />
+                                <p>This approach addresses key challenges: open-loop tracking follows ideal dynamics but
+                                    ignores
+                                    physical constraints, while closed-loop tracking is adaptive but can be noisy.</p>
+                                <p>The final reward combines multiple tracking targets from different starting points
+                                    for more
+                                    robust
+                                    learning.</p>
+                            </ExpansionCard>
+                        </v-col>
+
+                        <!-- Teacher-Student Training Card -->
+                        <v-col cols="12" sm="6" md="6">
+                            <ExpansionCard v-model:expanded="expanded">
+                                <template #media>
+                                    <v-img src="@/assets/images/teacher-student.drawio.png" height="300px" contain
+                                        class="grey lighten-3" />
+                                </template>
+                                <template #title>Teacher-Student Training</template>
+                                <template #subtitle>Two-stage training approach for successful sim2real transfer with
+                                    imperfect state
+                                    estimation</template>
+                                <p><strong>FACET</strong> uses a two-stage teacher-student training approach to
+                                    facilitate
+                                    learning
+                                    and successful sim2real transfer.</p>
+                                <p>In the first stage, we train a teacher policy <vue-mathjax
+                                        formula="$\pi^{\text{teacher}}$" /> with
+                                    access to privileged information alongside a state estimator <vue-mathjax
+                                        formula="$\mathcal{E}^{\text{est}}(o_{:t})$" /> that predicts features from
+                                    available
+                                    sensors.</p>
+                                <p>In the second stage, a student policy <vue-mathjax
+                                        formula="$\pi^{\text{student}}$" /> is
+                                    initialized from the teacher's parameters and fine-tuned using PPO to work with the
+                                    estimated
+                                    features.</p>
+                            </ExpansionCard>
+                        </v-col>
+                    </v-row>
+                </v-col>
+            </v-row>
+        </v-container>
+
+        <!-- Simulation Section -->
+        <v-container ref="simulationSection" fluid class="pa-0" id="simulation">
+            <v-row no-gutters>
+                <v-col cols="12">
+                    <!-- Full-page video container -->
+                    <div class="position-relative" style="height: 100vh;">
+                        <!-- Video display -->
+                        <v-fade-transition>
+                            <video v-if="selectedSimVideo == 1" width="100%" height="100%" autoplay loop muted
+                                style="object-fit: cover; position: absolute; top: 0; left: 0;">
+                                <source src="@/assets/videos/tug_of_war.mp4" type="video/mp4">
+                            </video>
+                            <video v-if="selectedSimVideo == 2" width="100%" height="100%" autoplay loop muted
+                                style="object-fit: cover; position: absolute; top: 0; left: 0;">
+                                <source src="@/assets/videos/tug_of_war.mp4" type="video/mp4">
+                            </video>
+                            <video v-if="selectedSimVideo == 3" width="100%" height="100%" autoplay loop muted
+                                style="object-fit: cover; position: absolute; top: 0; left: 0;">
+                                <source src="@/assets/videos/tug_of_war.mp4" type="video/mp4">
+                            </video>
+                        </v-fade-transition>
+
+                        <!-- Title Overlay -->
+                        <div class="position-absolute" style="top: 40px; left: 0; right: 0; z-index: 1;">
+                            <h2 class="text-h4 text-center text-white">Simulation Training</h2>
+                        </div>
+
+                        <!-- Bottom Tab Navigation -->
+                        <div class="position-absolute d-flex justify-center"
+                            style="bottom: 40px; left: 0; right: 0; z-index: 1;">
+                            <v-btn-toggle v-model="selectedSimVideo" mandatory rounded
+                                background-color="rgba(0, 0, 0, 0.5)" class="elevation-4">
+                                <v-btn value="1" class="px-6">
+                                    <span>G1 Humanoid</span>
+                                </v-btn>
+                                <v-btn value="2" class="px-6">
+                                    <span>B1+Z1 Loco-Manipulator</span>
+                                </v-btn>
+                                <v-btn value="3" class="px-6">
+                                    <span>Go2 Quadruped</span>
+                                </v-btn>
+                            </v-btn-toggle>
+                        </div>
+                    </div>
+                </v-col>
+            </v-row>
+        </v-container>
+
+        <!-- Real-World Results Section -->
+        <v-container class="py-12" id="real-world">
+            <v-row justify="center">
+                <v-col cols="12" md="10">
+                    <h2 class="text-h4 text-center mb-6">Real-World Results</h2>
+                    <v-row>
+                        <v-col cols="12" md="6">
+                            <h3 class="text-h6">Tug of War</h3>
+                            <v-sheet color="grey lighten-2" class="d-flex align-center justify-center mb-4">
+                                <video width="100%" height="100%" autoplay loop muted>
+                                    <source src="@/assets/videos/tug_of_war.mp4" type="video/mp4">
+                                </video>
+                            </v-sheet>
+                        </v-col>
+                        <v-col cols="12" md="6">
+                            <h3 class="text-h6">Large Force Pulling</h3>
+                            <v-sheet color="grey lighten-2" class="d-flex align-center justify-center mb-4">
+                                <video width="100%" height="100%" autoplay loop muted>
+                                    <source src="@/assets/videos/large_force_pulling.mp4" type="video/mp4">
+                                </video>
+                            </v-sheet>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col cols="12" md="6">
+                            <h3 class="text-h6">Compliant Following</h3>
+                            <v-sheet color="grey lighten-2" class="d-flex align-center justify-center mb-4">
+                                <video width="100%" height="100%" autoplay loop muted>
+                                    <source src="@/assets/videos/tug_of_war.mp4" type="video/mp4">
+                                </video>
+                            </v-sheet>
+                        </v-col>
+                        <v-col cols="12" md="6">
+                            <h3 class="text-h6">Compliant to Perturbation</h3>
+                            <v-sheet color="grey lighten-2" class="d-flex align-center justify-center mb-4">
+                                <video width="100%" height="100%" autoplay loop muted>
+                                    <source src="@/assets/videos/tug_of_war.mp4" type="video/mp4">
+                                </video>
+                            </v-sheet>
+                        </v-col>
+                    </v-row>
+                </v-col>
+            </v-row>
+        </v-container>
+
+        <!-- Ablation Study Section -->
+        <v-container class="py-12 grey lighten-4" id="ablation">
+            <v-row justify="center">
+                <v-col cols="12" md="10">
+                    <h2 class="text-h4 text-center mb-6">Ablation Study</h2>
+                    <v-row>
+                        <v-col cols="12" sm="12" md="6" lg="4">
+                            <v-card elevation="2" class="pa-4 mb-4 h-100">
+                                <h3 class="text-h6 mb-3">Success Rate vs Peak Impact Force</h3>
+                                <v-img src="@/assets/images/survival.png" contain class="mb-4"></v-img>
+                                <p class="text-body-2">
+                                    FACET demonstrates superior robustness to large impulses compared to baseline
+                                    policies
+                                    trained with
+                                    velocity tracking (vanilla) and with random impulse perturbations (robust). The
+                                    success rate
+                                    remains
+                                    high even under significant impact forces.
+                                </p>
+                            </v-card>
+                        </v-col>
+                        <v-col cols="12" sm="12" md="6" lg="4">
+                            <v-card elevation="2" class="pa-4 mb-4 h-100">
+                                <h3 class="text-h6 mb-3">Planar Trajectory Upon Impulse</h3>
+                                <v-img src="@/assets/images/traj_impulse.png" contain class="mb-4"></v-img>
+                                <p class="text-body-2">
+                                    Planar (xy) trajectory of robot CoM under a 100 Ns lateral impulse with a 400 N peak
+                                    force.
+                                    FACET can compliantly follow the impulse, adapting its velocity to keep balance,
+                                    unlike the
+                                    stiffer responses or failures of the baselines.
+                                </p>
+                            </v-card>
+                        </v-col>
+                        <v-col cols="12" sm="12" md="6" lg="4">
+                            <v-card elevation="2" class="pa-4 mb-4 h-100">
+                                <h3 class="text-h6 mb-3">Distribution of Collision Impulse</h3>
+                                <v-img src="@/assets/images/impulse_dist.png" contain class="mb-4"></v-img>
+                                <p class="text-body-2">
+                                    Distribution of collision impulse when the robot walks into a virtual wall. FACET
+                                    achieves a
+                                    significantly lower collision impulse, and this can be modulated by adjusting the
+                                    impedance
+                                    parameter Kp, indicating enhanced safety during physical interaction.
+                                </p>
+                            </v-card>
+                        </v-col>
+                    </v-row>
+                    <!-- <v-card elevation="2" class="pa-4 mt-6">
+            <p class="text-body-1">
+              Our method introduces controllable compliance into the policy, allowing it to follow instead of 
+              counteract external forces when the forces are too large. We compare our method (FACET) with two 
+              baselines: (1) vanilla: a locomotion policy trained with velocity tracking reward, and (2) robust: 
+              trained additionally with random impulse domain randomizations. The distribution of perturbations 
+              applied during training for FACET and robust are identical (random impulse lasting 0.4~0.6s, 
+              peaking 80~200N). Safety is a critical aspect when the robot operates in cluttered environments, 
+              where intense collisions can damage both the subject and the robot itself. Our approach enables 
+              more compliant behavior upon collision by using small Kp and Kd.
+            </p>
+          </v-card> -->
+                </v-col>
+            </v-row>
+        </v-container>
+
+        <!-- Team Section -->
+        <v-container class="py-12 grey lighten-4" id="team">
+            <v-row justify="center">
+                <v-col cols="12" md="8">
+                    <h2 class="text-h4 text-center mb-6">Our Team</h2>
+                    <v-row justify="center">
+                        <v-col cols="12" sm="4" class="text-center">
+                            <v-avatar size="120" color="grey lighten-2" class="mb-4">
+                                <v-icon size="64" color="grey darken-2">mdi-account</v-icon>
+                            </v-avatar>
+                            <h3 class="text-h6">Botian Xu *</h3>
+                            <p class="caption">Tsinghua University</p>
+                        </v-col>
+                        <v-col cols="12" sm="4" class="text-center">
+                            <v-avatar size="120" color="grey lighten-2" class="mb-4">
+                                <v-icon size="64" color="grey darken-2">mdi-account</v-icon>
+                            </v-avatar>
+                            <h3 class="text-h6">Haoyang Weng *</h3>
+                            <p class="caption">Tsinghua University</p>
+                        </v-col>
+                        <v-col cols="12" sm="4" class="text-center">
+                            <v-avatar size="120" color="grey lighten-2" class="mb-4">
+                                <v-icon size="64" color="grey darken-2">mdi-account</v-icon>
+                            </v-avatar>
+                            <h3 class="text-h6">Qingzhou Lu *</h3>
+                            <p class="caption">Tsinghua University</p>
+                        </v-col>
+                        <v-col cols="12" sm="4" class="text-center">
+                            <v-avatar size="120" color="grey lighten-2" class="mb-4">
+                                <v-icon size="64" color="grey darken-2">mdi-account</v-icon>
+                            </v-avatar>
+                            <h3 class="text-h6">Yang Gao</h3>
+                            <p class="caption">Tsinghua University</p>
+                        </v-col>
+                        <v-col cols="12" sm="4" class="text-center">
+                            <v-avatar size="120" color="grey lighten-2" class="mb-4">
+                                <v-icon size="64" color="grey darken-2">mdi-account</v-icon>
+                            </v-avatar>
+                            <h3 class="text-h6">Huazhe Xu</h3>
+                            <p class="caption">Tsinghua University</p>
+                        </v-col>
+
+                    </v-row>
+                </v-col>
+            </v-row>
+        </v-container>
+
+        <!-- Footer -->
+        <v-footer padless>
+            <v-container>
+                <v-row justify="center">
+                    <v-col cols="12" md="8" class="text-center">
+                        <p class="mb-4">
+                            Website template modified from original sources
+                        </p>
+                        <p>
+                            Licensed under Creative Commons Attribution-ShareAlike 4.0
+                        </p>
+                    </v-col>
+                </v-row>
+            </v-container>
+        </v-footer>
+    </v-app>
+</template>
+
+<script>
+import VueMathjax from 'vue-mathjax-next'
+export default {
+    name: 'App',
+    components: { VueMathjax },
+    data() {
+        return {
+            navigationItems: [
+                { text: 'Introduction', icon: 'mdi-information', target: 'introduction' },
+                { text: 'Method', icon: 'mdi-cog', target: 'method' },
+                { text: 'Simulation', icon: 'mdi-video', target: 'simulation' },
+                { text: 'Results', icon: 'mdi-chart-bar', target: 'real-world' },
+                { text: 'Ablation', icon: 'mdi-microscope', target: 'ablation' },
+                { text: 'Team', icon: 'mdi-account-group', target: 'team' }
+            ],
+            headerLinks: [
+                { text: 'PAPER', icon: 'mdi-file-pdf-box', href: 'https://github.com' },
+                { text: 'ARXIV', icon: 'mdi-file-document', href: 'https://github.com' },
+                { text: 'VIDEO', icon: 'mdi-video', href: 'https://github.com' },
+                { text: 'CODE', icon: 'mdi-github', href: 'https://github.com' }
+            ],
+            show_step: 1,
+            selectedSimVideo: 1,
+            isSnapping: false,
+            expanded: false,
+            scrollTimeout: null,
+        }
+    },
+    mounted() {
+        window.addEventListener('scroll', this.handleScroll, { passive: true });
+        window.addEventListener('wheel', this.preventScroll, { passive: false });
+        window.addEventListener('touchmove', this.preventScroll, { passive: false });
+    },
+    beforeDestroy() {
+        window.removeEventListener('scroll', this.handleScroll);
+        window.removeEventListener('wheel', this.preventScroll);
+        window.removeEventListener('touchmove', this.preventScroll);
+    },
+    methods: {
+        scrollToSection(target) {
+            const element = document.getElementById(target);
+            if (element) {
+                element.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        },
+        preventScroll(e) {
+            if (this.isSnapping) {
+                e.preventDefault();
+            }
+        },
+        handleScroll() {
+            if (this.scrollTimeout) {
+                clearTimeout(this.scrollTimeout);
+            }
+            this.scrollTimeout = setTimeout(() => {
+                this.checkVisibilityAndSnap();
+            }, 1000);
+        },
+        checkVisibilityAndSnap() {
+            if (this.isSnapping) return;
+
+            const rect = this.$refs.simulationSection.$el.getBoundingClientRect();
+            const vh = window.innerHeight;
+
+            const visibleHeight = Math.min(rect.bottom, vh) - Math.max(rect.top, 0);
+            const totalHeight = rect.height;
+            const visibleRatio = visibleHeight / totalHeight;
+
+            if (visibleRatio >= 0.75) {
+                this.doSnap();
+            }
+        },
+        doSnap() {
+            this.isSnapping = true;
+            this.$refs.simulationSection.$el.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start',
+            });
+            setTimeout(() => {
+                this.isSnapping = false;
+            }, 600);
+        }
+    }
+}
+</script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;700&display=swap');
+
+h1,
+h2 {
+    font-family: 'Montserrat', sans-serif;
+}
+
+.v-sheet.v-card {
+    transition: transform 0.2s;
+}
+
+.v-sheet.v-card:hover {
+    transform: translateY(-4px);
+}
+
+.position-relative {
+    position: relative;
+}
+
+.position-absolute {
+    position: absolute;
+}
+
+/* Remove app-bar background and add floating button styles */
+.v-app-bar {
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+.v-app-bar .v-btn {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+    border-radius: 8px;
+    margin: 0 4px;
+    transition: all 0.3s ease;
+}
+
+.v-app-bar .v-btn:hover {
+    background: rgba(255, 255, 255, 0.9) !important;
+    color: black !important;
+    transform: translateY(-2px);
+}
+
+.v-app-bar a {
+    color: white !important;
+    text-decoration: none;
+}
+
+.v-app-bar .v-btn:hover a {
+    color: black !important;
+}
+
+.v-card.overflow-y-auto {
+    overflow-y: auto;
+    scrollbar-width: thin;
+    /* For Firefox */
+    scrollbar-color: rgba(0, 0, 0, 0.3) transparent;
+    /* For Firefox */
+}
+
+/* For Webkit browsers (Chrome, Safari) */
+.v-card.overflow-y-auto::-webkit-scrollbar {
+    width: 6px;
+}
+
+.v-card.overflow-y-auto::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.v-card.overflow-y-auto::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 3px;
+}
+
+.text-shadow {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+/* MainLayout styles */
+.hero-section {
+    overflow: hidden;
+}
+
+.hero-background {
+    transition: background 0.5s ease;
+}
+
+/* Common style for all navigation buttons */
+.nav-btn {
+    background: rgba(255, 255, 255, 0.3) !important;
+    backdrop-filter: blur(5px);
+    transition: all 0.3s ease;
+    opacity: 0.7;
+    position: relative;
+    z-index: 11;
+}
+
+.nav-btn:hover {
+    background: rgba(255, 255, 255, 0.9) !important;
+    opacity: 1;
+}
+
+/* Left navigation specific styles */
+.left-nav-btn {
+    min-width: 150px;
+    text-align: left !important;
+    justify-content: flex-start !important;
+}
+
+.left-nav-btn:hover {
+    transform: translateX(5px);
+}
+
+/* Header navigation specific styles */
+.header-nav-btn:hover {
+    transform: translateY(-2px);
+}
+</style>
+
+<!-- Live Demo Button -->
+<style>
+/* CTA 外层容器，覆盖在最右侧 */
+.hero-cta {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    width: 250px;
+    /* 根据需要调整宽度 */
+    height: 100%;
+    cursor: pointer;
+    z-index: 8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 渐变蒙版：从右侧深色到左侧透明 */
+.gradient-mask {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to left, rgba(0, 0, 0, 0.6), transparent);
+    pointer-events: none;
+}
+
+/* 箭头和文字的容器，保证在蒙版之上 */
+.cta-content {
+    position: relative;
+    display: flex;
+    align-items: center;
+    z-index: 9;
+}
+
+/* 箭头的动画提示 */
+.arrow-icon {
+    color: #fff;
+    animation: moveArrow 1.5s infinite;
+}
+
+/* 文案样式 */
+.cta-text {
+    color: #fff;
+    margin-left: 8px;
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+/* 简单来回动画 */
+@keyframes moveArrow {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    50% {
+        transform: translateX(10px);
+    }
+}
+</style>
