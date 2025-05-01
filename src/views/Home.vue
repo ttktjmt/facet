@@ -226,7 +226,7 @@
                                     <v-img src="@/assets/images/method-right.drawio.png" height="300px" contain
                                         class="grey lighten-3" />
                                 </template>
-                                <template #title>Temporal Smoothing</template>
+                                <template #title>Temporal Smoothing of Tracking Targets</template>
                                 <template #subtitle><strong>FACET</strong> uses temporal smoothing to balance between
                                     open-loop and
                                     closed-loop
@@ -269,12 +269,10 @@
                                     <v-img src="@/assets/images/teacher-student.drawio.png" height="300px" contain
                                         class="grey lighten-3" />
                                 </template>
-                                <template #title>Teacher-Student Training</template>
+                                <template #title>Two-Stage Teacher-Student Training</template>
                                 <template #subtitle>
-                                <strong>FACET</strong> uses a two-stage teacher-student training approach to
-                                    facilitate
-                                    learning
-                                    and successful sim2real transfer.
+                                    <strong>FACET</strong> uses a two-stage teacher-student training approach to
+                                    facilitate learning and ensure successful sim2real transfer.
                                 </template>
                                 <p>In the first stage, we train a teacher policy <vue-mathjax
                                         formula="$\pi^{\text{teacher}}$" /> with
