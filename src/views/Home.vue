@@ -534,6 +534,9 @@ export default {
         window.removeEventListener('touchmove', this.preventScroll);
     },
     methods: {
+        openLiveDemo() {
+            this.$router.push('/demo');
+        },
         scrollToSection(target) {
             const element = document.getElementById(target);
             if (element) {
