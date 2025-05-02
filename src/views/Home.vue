@@ -62,13 +62,13 @@
                     <p class="text-h4 text-center mb-6">Introduction</p>
 
                     <v-row justify="center">
-                        <v-col cols="12" md="12" lg="8">
+                        <v-col cols="12" md="12" lg="12">
                             <v-img src="@/assets/images/head.drawio.png" contain></v-img>
                         </v-col>
                     </v-row>
 
                     <v-row>
-                        <v-col cols="12" md="12">
+                        <v-col cols="12" md="12" lg="12">
                             <div class="text-body-1">
                                 <p class="mb-4">
                                     Recent advances in reinforcement learning (RL) for robotics have shown
