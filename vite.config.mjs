@@ -31,7 +31,7 @@ export default defineConfig({
     }),
   ],
   optimizeDeps: {
-    exclude: ['vuetify'],
+    exclude: ['vuetify', 'onnxruntime-web'],
   },
   define: { 'process.env': {} },
   resolve: {
