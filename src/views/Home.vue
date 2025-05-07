@@ -1,59 +1,70 @@
 <template>
     <v-app>
         <!-- Hero Section -->
-        <v-container fluid class="hero-section pa-0" style="height: 100vh; position: relative;">
-            <!-- Video Background (bottom layer) -->
-            <video playsinline autoplay muted loop class="hero-video"
-                style="position: absolute; min-width: 100%; min-height: 100%; width: auto; height: auto; z-index: 1;">
-                <source src="@/assets/videos/FACET Website Head.mp4" type="video/mp4">
-            </video>
+        <section ref="heroSection">
+            <v-container fluid class="hero-section pa-0" style="height: 100vh; position: relative;">
+                <!-- Video Background (bottom layer) -->
+                <video playsinline autoplay muted loop class="hero-video"
+                    style="position: absolute; min-width: 100%; min-height: 100%; width: auto; height: auto; z-index: 1;">
+                    <source src="@/assets/videos/FACET Website Head.mp4" type="video/mp4">
+                </video>
 
-            <!-- Left Side Navigation -->
-            <div style="position: fixed; left: 20px; top: 50%; transform: translateY(-50%); z-index: 11;">
-                <v-btn v-for="(item, index) in navigationItems" :key="index" text block
-                    class="mb-2 nav-btn left-nav-btn" @click="scrollToSection(item.target)">
-                    <v-icon left>{{ item.icon }}</v-icon>
-                    {{ item.text }}
-                </v-btn>
-            </div>
-
-            <!-- Live Demo Button -->
-            <div class="hero-cta" @click="openLiveDemo">
-                <div class="gradient-mask"></div>
-                <div class="cta-content">
-                    <v-icon class="arrow-icon" large>mdi-arrow-right-bold</v-icon>
-                    <span class="cta-text">Try Live Demo</span>
+                <!-- Left Side Navigation -->
+                <div style="position: fixed; left: 20px; top: 50%; transform: translateY(-50%); z-index: 11;">
+                    <v-btn v-for="(item, index) in navigationItems" :key="index" text block
+                        class="mb-2 nav-btn left-nav-btn" @click="scrollToSection(item.target)">
+                        <v-icon left>{{ item.icon }}</v-icon>
+                        {{ item.text }}
+                    </v-btn>
                 </div>
-            </div>
 
-            <!-- Hero Content Wrapper (top layer) -->
-            <div style="position: relative; z-index: 3; height: 100%;">
-                <!-- Hero Content -->
-                <v-container class="d-flex flex-column justify-center align-center text-center" style="height: 100%;">
-                    <h1 style="font-size: 2000%; line-height: 0.95; user-select: none; -webkit-user-select: none; -ms-user-select: none;"
-                        class="font-weight-light mb-4 text-white text-shadow"><em>FACET</em>
-                    </h1>
-                    <h2 class="text-h2 font-weight-light mb-4 text-white text-shadow">
-                        <strong><em>F</em></strong>orce-<strong><em>A</em></strong>daptive
-                        <strong><em>C</em></strong>ontrol
-                        via
-                        Imp<strong><em>e</em></strong>dance<br /> <strong><em>R</em></strong>eference
-                        <strong><em>T</em></strong>racking for
-                        Legged Robots
-                    </h2>
-                    <!-- <p class="text-h5">Enabling Natural and Safe Robot Interactions Through Advanced Control</p> -->
-                </v-container>
-            </div>
+                <!-- Live Demo Button -->
+                <div class="hero-cta" @click="openLiveDemo">
+                    <div class="gradient-mask"></div>
+                    <div class="cta-content text-center">
+                        <div style="width: 100%;">
+                            <p class="cta-text">Play FACET<br />In Your Browser</p>
+                        </div>
+                        <div style="width: 100%;"><v-icon class="arrow-icon" large>mdi-arrow-right-bold</v-icon></div>
+                    </div>
+                </div>
 
-            <!-- Header -->
-            <div style="position: fixed; top: 20px; right: 20px; z-index: 10;">
-                <v-btn v-for="(link, index) in headerLinks" :key="index" :href="link.href" target="_blank" text
-                    class="nav-btn header-nav-btn mx-1">
-                    <v-icon left>{{ link.icon }}</v-icon>
-                    {{ link.text }}
-                </v-btn>
-            </div>
-        </v-container>
+                <!-- Hero Content Wrapper (top layer) -->
+                <div style="position: relative; z-index: 3; height: 100%;">
+                    <!-- Hero Content -->
+                    <v-container class="d-flex flex-column justify-center align-center text-center"
+                        style="height: 100%;">
+                        <h1 style="font-size: 2000%; line-height: 0.95; user-select: none; -webkit-user-select: none; -ms-user-select: none;"
+                            class="font-weight-light mb-4 text-white text-shadow"><em>FACET</em>
+                        </h1>
+                        <h2 class="text-h2 font-weight-light mb-4 text-white text-shadow">
+                            <strong><em>F</em></strong>orce-<strong><em>A</em></strong>daptive
+                            <strong><em>C</em></strong>ontrol
+                            via
+                            Imp<strong><em>e</em></strong>dance<br /> <strong><em>R</em></strong>eference
+                            <strong><em>T</em></strong>racking for
+                            Legged Robots
+                        </h2>
+                        <!-- <p class="text-h5">Enabling Natural and Safe Robot Interactions Through Advanced Control</p> -->
+                    </v-container>
+                </div>
+
+                <!-- Header -->
+                <div style="position: fixed; top: 20px; right: 20px; z-index: 10;">
+                    <v-btn v-for="(link, index) in headerLinks" :key="index" :href="link.href" target="_blank" text
+                        class="nav-btn header-nav-btn mx-1">
+                        <v-icon left>{{ link.icon }}</v-icon>
+                        {{ link.text }}
+                    </v-btn>
+                    <v-expand-x-transition>
+                        <v-btn v-if="!isHeroVisible" color="primary" class="mr-4" @click="openLiveDemo">
+                            <v-icon left>mdi-play-circle</v-icon>
+                            Play FACET
+                        </v-btn>
+                    </v-expand-x-transition>
+                </div>
+            </v-container>
+        </section>
 
         <!-- Introduction Section -->
         <v-container class="py-12" id="introduction">
@@ -304,14 +315,8 @@
                         <!-- Video display -->
                         <div v-for="video in simulationVideos" :key="video.id">
                             <v-fade-transition>
-                                <video 
-                                    v-if="selectedSimVideo == video.id"
-                                    width="100%" 
-                                    height="100%" 
-                                    autoplay 
-                                    loop 
-                                    muted
-                                    style="object-fit: cover; position: absolute; top: 0; left: 0;">
+                                <video v-if="selectedSimVideo == video.id" width="100%" height="100%" autoplay loop
+                                    muted style="object-fit: cover; position: absolute; top: 0; left: 0;">
                                     <source :src="video.src" type="video/mp4">
                                 </video>
                             </v-fade-transition>
@@ -322,10 +327,7 @@
                             style="bottom: 40px; left: 0; right: 0; z-index: 1;">
                             <v-btn-toggle v-model="selectedSimVideo" mandatory rounded
                                 background-color="rgba(0, 0, 0, 0.5)" class="elevation-4">
-                                <v-btn v-for="video in simulationVideos" 
-                                    :key="video.id"
-                                    :value="video.id" 
-                                    class="px-6">
+                                <v-btn v-for="video in simulationVideos" :key="video.id" :value="video.id" class="px-6">
                                     <span>{{ video.title }}</span>
                                 </v-btn>
                             </v-btn-toggle>
@@ -534,6 +536,7 @@ export default {
     components: { VueMathjax },
     data() {
         return {
+            isHeroVisible: true,
             navigationItems: [
                 { text: 'Introduction', icon: 'mdi-information', target: 'introduction' },
                 { text: 'Method', icon: 'mdi-cog', target: 'method' },
@@ -559,17 +562,33 @@ export default {
             isSnapping: false,
             expanded: false,
             scrollTimeout: null,
+            observer: null,
         }
     },
     mounted() {
         window.addEventListener('scroll', this.handleScroll, { passive: true });
         window.addEventListener('wheel', this.preventScroll, { passive: false });
         window.addEventListener('touchmove', this.preventScroll, { passive: false });
+
+        // Set up IntersectionObserver to watch hero section visibility
+        this.observer = new IntersectionObserver(
+            ([entry]) => {
+                this.isHeroVisible = entry.isIntersecting;
+                console.log(this.isHeroVisible);
+            },
+            { threshold: 0.1 }
+        );
+        this.observer.observe(this.$refs.heroSection);
     },
     beforeDestroy() {
         window.removeEventListener('scroll', this.handleScroll);
         window.removeEventListener('wheel', this.preventScroll);
         window.removeEventListener('touchmove', this.preventScroll);
+
+        // Clean up the observer
+        if (this.observer) {
+            this.observer.disconnect();
+        }
     },
     methods: {
         openLiveDemo() {
@@ -778,6 +797,7 @@ h2 {
 .cta-content {
     position: relative;
     display: flex;
+    flex-direction: column;
     align-items: center;
     z-index: 9;
 }
