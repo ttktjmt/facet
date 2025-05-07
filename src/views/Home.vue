@@ -5,7 +5,7 @@
             <!-- Video Background (bottom layer) -->
             <video playsinline autoplay muted loop class="hero-video"
                 style="position: absolute; min-width: 100%; min-height: 100%; width: auto; height: auto; z-index: 1;">
-                <source src="@/assets/videos/tug_of_war.mp4" type="video/mp4">
+                <source src="@/assets/videos/FACET Website Head.mp4" type="video/mp4">
             </video>
 
             <!-- Left Side Navigation -->
@@ -302,22 +302,21 @@
                         <v-fade-transition>
                             <video v-if="selectedSimVideo == 1" width="100%" height="100%" autoplay loop muted
                                 style="object-fit: cover; position: absolute; top: 0; left: 0;">
-                                <source src="@/assets/videos/tug_of_war.mp4" type="video/mp4">
+                                <source src="@/assets/videos/FACET B1Z1 Demo (with caption).mp4" type="video/mp4">
                             </video>
                             <video v-if="selectedSimVideo == 2" width="100%" height="100%" autoplay loop muted
                                 style="object-fit: cover; position: absolute; top: 0; left: 0;">
-                                <source src="@/assets/videos/tug_of_war.mp4" type="video/mp4">
+                                <source src="@/assets/videos/g1_impulse_multiple.mp4" type="video/mp4">
                             </video>
                             <video v-if="selectedSimVideo == 3" width="100%" height="100%" autoplay loop muted
                                 style="object-fit: cover; position: absolute; top: 0; left: 0;">
                                 <source src="@/assets/videos/tug_of_war.mp4" type="video/mp4">
                             </video>
+                            <video v-if="selectedSimVideo == 4" width="100%" height="100%" autoplay loop muted
+                                style="object-fit: cover; position: absolute; top: 0; left: 0;">
+                                <source src="@/assets/videos/b1z1_training.mp4" type="video/mp4">
+                            </video>
                         </v-fade-transition>
-
-                        <!-- Title Overlay -->
-                        <div class="position-absolute" style="top: 40px; left: 0; right: 0; z-index: 1;">
-                            <h2 class="text-h4 text-center text-white">Simulation Training</h2>
-                        </div>
 
                         <!-- Bottom Tab Navigation -->
                         <div class="position-absolute d-flex justify-center"
@@ -325,13 +324,16 @@
                             <v-btn-toggle v-model="selectedSimVideo" mandatory rounded
                                 background-color="rgba(0, 0, 0, 0.5)" class="elevation-4">
                                 <v-btn value="1" class="px-6">
-                                    <span>G1 Humanoid</span>
+                                    <span>B1+Z1 Demo</span>
                                 </v-btn>
                                 <v-btn value="2" class="px-6">
-                                    <span>B1+Z1 Loco-Manipulator</span>
+                                    <span>G1 Impulse</span>
                                 </v-btn>
                                 <v-btn value="3" class="px-6">
-                                    <span>Go2 Quadruped</span>
+                                    <span>Go2 Training</span>
+                                </v-btn>
+                                <v-btn value="4" class="px-6">
+                                    <span>B1+Z1 Training</span>
                                 </v-btn>
                             </v-btn-toggle>
                         </div>
@@ -347,18 +349,36 @@
                     <h2 class="text-h4 text-center mb-6">Real-World Results</h2>
                     <v-row>
                         <v-col cols="12" md="6">
-                            <h3 class="text-h6">Tug of War</h3>
+                            <h3 class="text-h6">Compliant to Perturb and Pushes (FACET Policy)</h3>
                             <v-sheet color="grey lighten-2" class="d-flex align-center justify-center mb-4">
                                 <video width="100%" height="100%" autoplay loop muted>
-                                    <source src="@/assets/videos/tug_of_war.mp4" type="video/mp4">
+                                    <source src="@/assets/videos/facet-push-compliant.mp4" type="video/mp4">
                                 </video>
                             </v-sheet>
                         </v-col>
                         <v-col cols="12" md="6">
-                            <h3 class="text-h6">Large Force Pulling</h3>
+                            <h3 class="text-h6">Stiff Response of Baselines (Robust Policy)</h3>
                             <v-sheet color="grey lighten-2" class="d-flex align-center justify-center mb-4">
                                 <video width="100%" height="100%" autoplay loop muted>
-                                    <source src="@/assets/videos/large_force_pulling.mp4" type="video/mp4">
+                                    <source src="@/assets/videos/velocity-push-stiff.mp4" type="video/mp4">
+                                </video>
+                            </v-sheet>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col cols="12" md="6">
+                            <h3 class="text-h6">Robust to Large Forces (0.3x)</h3>
+                            <v-sheet color="grey lighten-2" class="d-flex align-center justify-center mb-4">
+                                <video width="100%" height="100%" autoplay loop muted>
+                                    <source src="@/assets/videos/facet-side_pull-success-0.3x.mp4" type="video/mp4">
+                                </video>
+                            </v-sheet>
+                        </v-col>
+                        <v-col cols="12" md="6">
+                            <h3 class="text-h6">Failures of Baselines (0.3x)</h3>
+                            <v-sheet color="grey lighten-2" class="d-flex align-center justify-center mb-4">
+                                <video width="100%" height="100%" autoplay loop muted>
+                                    <source src="@/assets/videos/default-side_pull-fail-0.3x.mp4" type="video/mp4">
                                 </video>
                             </v-sheet>
                         </v-col>
@@ -368,15 +388,15 @@
                             <h3 class="text-h6">Compliant Following</h3>
                             <v-sheet color="grey lighten-2" class="d-flex align-center justify-center mb-4">
                                 <video width="100%" height="100%" autoplay loop muted>
-                                    <source src="@/assets/videos/tug_of_war.mp4" type="video/mp4">
+                                    <source src="@/assets/videos/compliant_following.mp4" type="video/mp4">
                                 </video>
                             </v-sheet>
                         </v-col>
                         <v-col cols="12" md="6">
-                            <h3 class="text-h6">Compliant to Perturbation</h3>
+                            <h3 class="text-h6">Large Force Pulling</h3>
                             <v-sheet color="grey lighten-2" class="d-flex align-center justify-center mb-4">
                                 <video width="100%" height="100%" autoplay loop muted>
-                                    <source src="@/assets/videos/tug_of_war.mp4" type="video/mp4">
+                                    <source src="@/assets/videos/large_force_pulling.mp4" type="video/mp4">
                                 </video>
                             </v-sheet>
                         </v-col>
