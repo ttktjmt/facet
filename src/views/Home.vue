@@ -11,8 +11,8 @@
 
                 <!-- Left Side Navigation -->
                 <div style="position: fixed; left: 20px; top: 50%; transform: translateY(-50%); z-index: 11;">
-                    <v-btn v-for="(item, index) in navigationItems" :key="index" text block
-                        class="mb-2 nav-btn left-nav-btn" @click="scrollToSection(item.target)">
+                    <v-btn v-for="(item, index) in navigationItems" :key="index" text block class="mb-2 text-left"
+                        @click="scrollToSection(item.target)">
                         <v-icon left>{{ item.icon }}</v-icon>
                         {{ item.text }}
                     </v-btn>
@@ -51,17 +51,17 @@
 
                 <!-- Header -->
                 <div style="position: fixed; top: 20px; right: 20px; z-index: 10;">
-                    <v-btn v-for="(link, index) in headerLinks" :key="index" :href="link.href" target="_blank" text
-                        class="nav-btn header-nav-btn mx-1">
-                        <v-icon left>{{ link.icon }}</v-icon>
-                        {{ link.text }}
-                    </v-btn>
-                    <v-expand-x-transition>
-                        <v-btn v-if="!isHeroVisible" color="primary" class="mr-4" @click="openLiveDemo">
+                    <v-fade-transition>
+                        <v-btn v-if="!isHeroVisible" color="primary" class="mx-1" @click="openLiveDemo">
                             <v-icon left>mdi-play-circle</v-icon>
                             Play FACET
                         </v-btn>
-                    </v-expand-x-transition>
+                    </v-fade-transition>
+                    <v-btn v-for="(link, index) in headerLinks" :key="index" :href="link.href" target="_blank" text
+                        class="mx-1">
+                        <v-icon left>{{ link.icon }}</v-icon>
+                        {{ link.text }}
+                    </v-btn>
                 </div>
             </v-container>
         </section>
