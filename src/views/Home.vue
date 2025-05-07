@@ -182,7 +182,8 @@
                                     class="text-center my-2" />
                                 <p>where <vue-mathjax formula="$K_p$" /> is spring stiffness,
                                     <vue-mathjax formula="$K_d$" /> is damping, and
-                                    <vue-mathjax formula="$\mathbf{x}_{des}, \dot{\mathbf{x}}_{des}$" /> are desired position and
+                                    <vue-mathjax formula="$\mathbf{x}_{des}, \dot{\mathbf{x}}_{des}$" /> are desired
+                                    position and
                                     velocity.
                                 </p>
                             </ExpansionCard>
@@ -238,6 +239,7 @@
                                     formula="\begin{cases} \mathbf{x}_{\text{ref}}(t) = \mathbf{x}_{\text{sim}}(t') + \int_{t'}^t \dot{\mathbf{x}}_{\text{ref}}(t)dt \\ \dot{\mathbf{x}}_{\text{ref}}(t) = \dot{\mathbf{x}}_{\text{sim}}(t') + \int_{t'}^t \ddot{\mathbf{x}}_{\text{ref}}(t)dt \end{cases}"
                                     class="text-center mb-4" />
                                 <p>This approach addresses key challenges:
+                                </p>
                                 <ul class="pa-4">
                                     <li>Open-loop tracking (<vue-mathjax formula="$t' = 0$" />) follows ideal dynamics
                                         but ignores physical
@@ -246,17 +248,18 @@
                                     <li>closed-loop tracking (<vue-mathjax formula="$t' = t - \Delta t$" />) is adaptive
                                         but can be noisy.</li>
                                 </ul>
-                                </p>
                                 <p class="mb-4">
-                                    The final reward combines multiple tracking targets from different starting points <vue-mathjax
-                                        formula="$t'$" />:
+                                    The final reward combines multiple tracking targets from different starting points
+                                    <vue-mathjax formula="$t'$" />:
                                 </p>
                                 <vue-mathjax :block="true"
                                     formula="$r_t  = \frac{1}{M} \sum_{t'} \exp(-||\mathbf{x}_{\text{sim}}(t) - \mathbf{x}^{t'}_{\text{ref}}(t)||^2_2) \\
                                         \; \; \; + \exp(-||\dot{\mathbf{x}}_{\text{sim}}(t) - \dot{\mathbf{x}}^{t'}_{\text{ref}}(t)||^2_2)$"
                                     class="text-center mb-2" />
                                 <p>
-                                    , where <vue-mathjax formula="$t' \in \{t-8\Delta t, t-16\Delta t, t-32\Delta t\}$" /> in our implementation,
+                                    , where <vue-mathjax
+                                        formula="$t' \in \{t-8\Delta t, t-16\Delta t, t-32\Delta t\}$" /> in our
+                                    implementation,
                                     with <vue-mathjax formula="$\Delta t = 0.02s$" /> being the control interval.
                                 </p>
                             </ExpansionCard>
@@ -299,41 +302,31 @@
                     <!-- Full-page video container -->
                     <div class="position-relative" style="height: 100vh;">
                         <!-- Video display -->
-                        <v-fade-transition>
-                            <video v-if="selectedSimVideo == 1" width="100%" height="100%" autoplay loop muted
-                                style="object-fit: cover; position: absolute; top: 0; left: 0;">
-                                <source src="@/assets/videos/FACET B1Z1 Demo (with caption).mp4" type="video/mp4">
-                            </video>
-                            <video v-if="selectedSimVideo == 2" width="100%" height="100%" autoplay loop muted
-                                style="object-fit: cover; position: absolute; top: 0; left: 0;">
-                                <source src="@/assets/videos/g1_impulse_multiple.mp4" type="video/mp4">
-                            </video>
-                            <video v-if="selectedSimVideo == 3" width="100%" height="100%" autoplay loop muted
-                                style="object-fit: cover; position: absolute; top: 0; left: 0;">
-                                <source src="@/assets/videos/tug_of_war.mp4" type="video/mp4">
-                            </video>
-                            <video v-if="selectedSimVideo == 4" width="100%" height="100%" autoplay loop muted
-                                style="object-fit: cover; position: absolute; top: 0; left: 0;">
-                                <source src="@/assets/videos/b1z1_training.mp4" type="video/mp4">
-                            </video>
-                        </v-fade-transition>
+                        <div v-for="video in simulationVideos" :key="video.id">
+                            <v-fade-transition>
+                                <video 
+                                    v-if="selectedSimVideo == video.id"
+                                    width="100%" 
+                                    height="100%" 
+                                    autoplay 
+                                    loop 
+                                    muted
+                                    style="object-fit: cover; position: absolute; top: 0; left: 0;">
+                                    <source :src="video.src" type="video/mp4">
+                                </video>
+                            </v-fade-transition>
+                        </div>
 
                         <!-- Bottom Tab Navigation -->
                         <div class="position-absolute d-flex justify-center"
                             style="bottom: 40px; left: 0; right: 0; z-index: 1;">
                             <v-btn-toggle v-model="selectedSimVideo" mandatory rounded
                                 background-color="rgba(0, 0, 0, 0.5)" class="elevation-4">
-                                <v-btn value="1" class="px-6">
-                                    <span>B1+Z1 Demo</span>
-                                </v-btn>
-                                <v-btn value="2" class="px-6">
-                                    <span>G1 Impulse</span>
-                                </v-btn>
-                                <v-btn value="3" class="px-6">
-                                    <span>Go2 Training</span>
-                                </v-btn>
-                                <v-btn value="4" class="px-6">
-                                    <span>B1+Z1 Training</span>
+                                <v-btn v-for="video in simulationVideos" 
+                                    :key="video.id"
+                                    :value="video.id" 
+                                    class="px-6">
+                                    <span>{{ video.title }}</span>
                                 </v-btn>
                             </v-btn-toggle>
                         </div>
@@ -548,6 +541,12 @@ export default {
                 { text: 'Results', icon: 'mdi-chart-bar', target: 'real-world' },
                 { text: 'Ablation', icon: 'mdi-microscope', target: 'ablation' },
                 { text: 'Team', icon: 'mdi-account-group', target: 'team' }
+            ],
+            simulationVideos: [
+                { id: 1, src: new URL('@/assets/videos/FACET B1Z1 Demo (with caption).mp4', import.meta.url).href, title: 'B1+Z1 Demo' },
+                { id: 2, src: new URL('@/assets/videos/g1_impulse_multiple.mp4', import.meta.url).href, title: 'G1 Impulse' },
+                { id: 3, src: new URL('@/assets/videos/tug_of_war.mp4', import.meta.url).href, title: 'Go2 Training' },
+                { id: 4, src: new URL('@/assets/videos/b1z1_training.mp4', import.meta.url).href, title: 'B1+Z1 Training' }
             ],
             headerLinks: [
                 { text: 'PAPER', icon: 'mdi-file-pdf-box', href: 'https://github.com' },
