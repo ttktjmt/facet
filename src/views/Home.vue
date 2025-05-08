@@ -9,6 +9,9 @@
                     <source src="@/assets/videos/FACET Website Head.mp4" type="video/mp4">
                 </video>
 
+                <!-- Grey Overlay (middle layer) -->
+                <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(100, 100, 100, 0.4); z-index: 2;"></div>
+
                 <!-- Left Side Navigation -->
                 <div style="position: fixed; left: 20px; top: 50%; transform: translateY(-50%); z-index: 11;">
                     <v-btn v-for="(item, index) in navigationItems" :key="index" text block class="mb-2 text-left"
@@ -34,15 +37,15 @@
                     <!-- Hero Content -->
                     <v-container class="d-flex flex-column justify-center align-center text-center"
                         style="height: 100%;">
-                        <h1 style="font-size: 2000%; line-height: 0.95; user-select: none; -webkit-user-select: none; -ms-user-select: none;"
-                            class="font-weight-light mb-4 text-white text-shadow"><em>FACET</em>
+                        <h1 style="font-size: 1500%; line-height: 0.95; user-select: none; -webkit-user-select: none; -ms-user-select: none; font-family: Georgia;"
+                            class="font-weight-light mb-4 text-white text-shadow">FACET
                         </h1>
-                        <h2 class="text-h2 font-weight-light mb-4 text-white text-shadow">
-                            <strong><em>F</em></strong>orce-<strong><em>A</em></strong>daptive
-                            <strong><em>C</em></strong>ontrol
+                        <h2 class="text-h2 font-weight-light mb-4 text-white text-shadow" style="font-family: Georgia;">
+                            <span class="highlight-letter">F</span>orce-<span class="highlight-letter">A</span>daptive 
+                            <span class="highlight-letter">C</span>ontrol
                             via
-                            Imp<strong><em>e</em></strong>dance<br /> <strong><em>R</em></strong>eference
-                            <strong><em>T</em></strong>racking for
+                            Imp<span class="highlight-letter">e</span>dance<br /> R<span class="highlight-letter">e</span>ference 
+                            <span class="highlight-letter">T</span>racking for
                             Legged Robots
                         </h2>
                         <!-- <p class="text-h5">Enabling Natural and Safe Robot Interactions Through Advanced Control</p> -->
@@ -471,41 +474,50 @@
                     <h2 class="text-h4 text-center mb-6">Our Team</h2>
                     <v-row justify="center">
                         <v-col cols="12" sm="4" class="text-center">
-                            <v-avatar size="120" color="grey lighten-2" class="mb-4">
-                                <v-icon size="64" color="grey darken-2">mdi-account</v-icon>
-                            </v-avatar>
-                            <h3 class="text-h6">Botian Xu *</h3>
-                            <p class="caption">Tsinghua University</p>
+                            <a href="https://btx0424.github.io/" target="_blank" class="text-decoration-none">
+                                <v-avatar size="120" color="grey lighten-2" class="mb-4 clickable-avatar">
+                                    <v-icon size="64" color="grey darken-2">mdi-account</v-icon>
+                                </v-avatar>
+                                <h3 class="text-h6">Botian Xu *</h3>
+                                <p class="caption">Tsinghua University</p>
+                            </a>
                         </v-col>
                         <v-col cols="12" sm="4" class="text-center">
-                            <v-avatar size="120" color="grey lighten-2" class="mb-4">
-                                <v-icon size="64" color="grey darken-2">mdi-account</v-icon>
-                            </v-avatar>
-                            <h3 class="text-h6">Haoyang Weng *</h3>
-                            <p class="caption">Tsinghua University</p>
+                            <a href="https://egalahad.github.io/" target="_blank" class="text-decoration-none">
+                                <v-avatar size="120" color="grey lighten-2" class="mb-4 clickable-avatar">
+                                    <v-icon size="64" color="grey darken-2">mdi-account</v-icon>
+                                </v-avatar>
+                                <h3 class="text-h6">Haoyang Weng *</h3>
+                                <p class="caption">Tsinghua University</p>
+                            </a>
                         </v-col>
                         <v-col cols="12" sm="4" class="text-center">
-                            <v-avatar size="120" color="grey lighten-2" class="mb-4">
-                                <v-icon size="64" color="grey darken-2">mdi-account</v-icon>
-                            </v-avatar>
-                            <h3 class="text-h6">Qingzhou Lu *</h3>
-                            <p class="caption">Tsinghua University</p>
+                            <a href="https://me.axell.top/" target="_blank" class="text-decoration-none">
+                                <v-avatar size="120" color="grey lighten-2" class="mb-4 clickable-avatar">
+                                    <v-icon size="64" color="grey darken-2">mdi-account</v-icon>
+                                </v-avatar>
+                                <h3 class="text-h6">Qingzhou Lu *</h3>
+                                <p class="caption">Tsinghua University</p>
+                            </a>
                         </v-col>
                         <v-col cols="12" sm="4" class="text-center">
-                            <v-avatar size="120" color="grey lighten-2" class="mb-4">
-                                <v-icon size="64" color="grey darken-2">mdi-account</v-icon>
-                            </v-avatar>
-                            <h3 class="text-h6">Yang Gao</h3>
-                            <p class="caption">Tsinghua University</p>
+                            <a href="https://yang-gao.weebly.com/" target="_blank" class="text-decoration-none">
+                                <v-avatar size="120" color="grey lighten-2" class="mb-4 clickable-avatar">
+                                    <v-icon size="64" color="grey darken-2">mdi-account</v-icon>
+                                </v-avatar>
+                                <h3 class="text-h6">Yang Gao</h3>
+                                <p class="caption">Tsinghua University</p>
+                            </a>
                         </v-col>
                         <v-col cols="12" sm="4" class="text-center">
-                            <v-avatar size="120" color="grey lighten-2" class="mb-4">
-                                <v-icon size="64" color="grey darken-2">mdi-account</v-icon>
-                            </v-avatar>
-                            <h3 class="text-h6">Huazhe Xu</h3>
-                            <p class="caption">Tsinghua University</p>
+                            <a href="http://hxu.rocks/" target="_blank" class="text-decoration-none">
+                                <v-avatar size="120" color="grey lighten-2" class="mb-4 clickable-avatar">
+                                    <v-icon size="64" color="grey darken-2">mdi-account</v-icon>
+                                </v-avatar>
+                                <h3 class="text-h6">Huazhe Xu</h3>
+                                <p class="caption">Tsinghua University</p>
+                            </a>
                         </v-col>
-
                     </v-row>
                 </v-col>
             </v-row>
@@ -548,7 +560,7 @@ export default {
             simulationVideos: [
                 { id: 1, src: new URL('@/assets/videos/FACET B1Z1 Demo (with caption).mp4', import.meta.url).href, title: 'B1+Z1 Demo' },
                 { id: 2, src: new URL('@/assets/videos/g1_impulse_multiple.mp4', import.meta.url).href, title: 'G1 Impulse' },
-                { id: 3, src: new URL('@/assets/videos/tug_of_war.mp4', import.meta.url).href, title: 'Go2 Training' },
+                { id: 3, src: new URL('@/assets/videos/go2_training_dist-world-force-setvel.mp4', import.meta.url).href, title: 'Go2 Training' },
                 { id: 4, src: new URL('@/assets/videos/b1z1_training.mp4', import.meta.url).href, title: 'B1+Z1 Training' }
             ],
             headerLinks: [
@@ -762,6 +774,14 @@ h2 {
 .header-nav-btn:hover {
     transform: translateY(-2px);
 }
+
+:root {
+    --highlight-color: #4285F4;
+}
+
+.highlight-letter {
+    color: var(--highlight-color);
+}
 </style>
 
 <!-- Live Demo Button -->
@@ -827,5 +847,20 @@ h2 {
     50% {
         transform: translateX(10px);
     }
+}
+</style>
+
+<style>
+.clickable-avatar {
+    transition: transform 0.2s ease-in-out;
+}
+
+.clickable-avatar:hover {
+    transform: scale(1.05);
+}
+
+.text-decoration-none {
+    text-decoration: none;
+    color: inherit;
 }
 </style>

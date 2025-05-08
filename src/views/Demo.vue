@@ -6,7 +6,7 @@
         <v-card>
             <v-tabs v-model="task" bg-color="primary" @update:modelValue="updateTaskCallback()">
                 <v-tab value="1">Go2 Walking</v-tab>
-                <v-tab value="2">Go2 Wall</v-tab>
+                <!-- <v-tab value="2">Go2 Wall</v-tab> -->
             </v-tabs>
 
             <v-tabs-window v-model="task">
@@ -54,11 +54,10 @@
                         </v-tabs-window>
                     </v-card-text>
 
-                    <Line :data="plot_data" :options="plot_options" style="width: 100%; height: 300px;" />
                 </v-tabs-window-item>
 
 
-
+<!-- 
                 <v-tabs-window-item value="2">
                     <v-tabs v-model="policy" bg-color="primary" @update:modelValue="updatePolicyCallback()">
                         <v-tab value="facet">Facet</v-tab>
@@ -87,7 +86,7 @@
 
 
 
-                </v-tabs-window-item>
+                </v-tabs-window-item> -->
             </v-tabs-window>
 
             <!-- add reset button -->
@@ -101,36 +100,12 @@
 
 <script>
 
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-} from 'chart.js'
-import { Line } from 'vue-chartjs'
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-)
-
-
-
 import { MuJoCoDemo } from '@/mujoco_wasm/examples/main.js';
 import load_mujoco from '@/mujoco_wasm/dist/mujoco_wasm.js';
 
 const tasks = {
     "1": "unitree_go2/scene.xml",
-    "2": "unitree_go2/scene_wall.xml"
+    // "2": "unitree_go2/scene_wall.xml"
 }
 
 const policies = {
@@ -139,42 +114,13 @@ const policies = {
     "vanilla": "./examples/checkpoints/vanilla.json"
 }
 
-const plot_data_ = {
-  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-  datasets: [
-    {
-      label: 'Data One',
-      backgroundColor: '#f87979',
-      data: [40, 39, 10, 40, 39, 80, 40]
-    },
-    {
-      label: 'Data Two',
-      backgroundColor: '#7979f8',
-      data: [90, 89, 70, 90, 89, 100, 90]
-    }
-  ]
-}
-
-const plot_options_ = {
-  responsive: true,
-  maintainAspectRatio: true
-}
-
-
 export default {
     name: 'DemoPage',
-    components: {
-        Line
-    },
     data: () => ({
         task: '1',
         policy: 'facet',
         facet_kp: 24,
         command_vel_x: 0.0,
-
-        plot_data: plot_data_,
-        plot_options: plot_options_,
-        plotUpdateInterval: null,
     }),
     methods: {
         async init() {
@@ -212,43 +158,6 @@ export default {
         updateCommandVelXCallback() {
             this.demo.params["command_vel_x"] = this.command_vel_x;
         },
-        updatePlotData() {
-            const now = new Date();
-            
-            // Create a new object reference to trigger reactivity
-            this.plot_data = {
-                labels: Array(7).fill().map((_, i) => {
-                    const time = new Date(now - (6-i) * 1000);
-                    return time.toLocaleTimeString('en-US', { 
-                        hour12: false,
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        second: '2-digit'
-                    });
-                }),
-                datasets: [
-                    {
-                        ...this.plot_data.datasets[0],
-                        data: [...this.plot_data.datasets[0].data.slice(1), Math.random() * 100]
-                    },
-                    {
-                        ...this.plot_data.datasets[1],
-                        data: [...this.plot_data.datasets[1].data.slice(1), Math.random() * 100]
-                    }
-                ]
-            };
-        },
-        startPlotUpdates() {
-            this.plotUpdateInterval = setInterval(() => {
-                this.updatePlotData();
-            }, 1000);
-        },
-        stopPlotUpdates() {
-            if (this.plotUpdateInterval) {
-                clearInterval(this.plotUpdateInterval);
-                this.plotUpdateInterval = null;
-            }
-        }
     },
     mounted() {
         this.init().then(() => {
