@@ -14,7 +14,7 @@
 
                 <!-- Left Side Navigation -->
                 <div style="position: fixed; left: 20px; top: 50%; transform: translateY(-50%); z-index: 11;">
-                    <v-btn v-for="(item, index) in navigationItems" :key="index" text block class="mb-2 text-left"
+                    <v-btn v-for="(item, index) in navigationItems" :key="index" text block class="mb-2 justify-start text-start"
                         @click="scrollToSection(item.target)">
                         <v-icon left>{{ item.icon }}</v-icon>
                         {{ item.text }}
@@ -180,9 +180,8 @@
                                 </template>
                                 <template #title>Impedance Control for Fixed-Base Manipulators</template>
                                 <template #subtitle>
-                                    <strong>FACET</strong> is inspired by impedance control, which controls a robot like
-                                    a mass connected to a spring - it flexes with external forces
-                                    and returns to position
+                                    <strong>FACET</strong> is inspired by impedance control. You control the robot by manipulating one end of
+                                    a virtual spring. The robot behaves like a mass connected on the other end of the spring.
                                 </template>
                                 <p>Imagine controlling a robot like you're handling a mass connected to a spring: you
                                     drag
@@ -220,7 +219,7 @@
                                 <template #subtitle>
                                     <strong>FACET</strong> uses a virtual mass-spring-damper system as
                                     a reference model to guide the robot's center of mass motion - the robot learns to
-                                    imitate this reference model
+                                    imitate this reference model with reinforcement learning.
                                 </template>
                                 <p><strong>FACET</strong> leverages a virtual mass-spring-damper system as a reference
                                     model to
@@ -474,7 +473,6 @@
         </v-container>
 
         <!-- Team Section -->
-         <!-- 
         <v-container class="py-12 grey lighten-4" id="team">
             <v-row justify="center">
                 <v-col cols="12" md="8">
@@ -529,7 +527,6 @@
                 </v-col>
             </v-row>
         </v-container>
-         -->
 
         <!-- Footer -->
         <v-footer padless>
@@ -558,24 +555,24 @@ export default {
         return {
             isHeroVisible: true,
             navigationItems: [
-                { text: 'Introduction', icon: 'mdi-information', target: 'introduction' },
-                { text: 'Method', icon: 'mdi-cog', target: 'method' },
-                { text: 'Simulation', icon: 'mdi-video', target: 'simulation' },
-                { text: 'Results', icon: 'mdi-chart-bar', target: 'real-world' },
-                { text: 'Ablation', icon: 'mdi-microscope', target: 'ablation' },
-                { text: 'Team', icon: 'mdi-account-group', target: 'team' }
+                { text: ' Introduction', icon: 'mdi-information', target: 'introduction' },
+                { text: ' Method', icon: 'mdi-cog', target: 'method' },
+                { text: ' Simulation', icon: 'mdi-video', target: 'simulation' },
+                { text: ' Results', icon: 'mdi-chart-bar', target: 'real-world' },
+                { text: ' Ablation', icon: 'mdi-microscope', target: 'ablation' },
+                { text: ' Team', icon: 'mdi-account-group', target: 'team' }
             ],
             simulationVideos: [
                 { id: 1, src: new URL('@/assets/videos/FACET B1Z1 Demo (with caption).mp4', import.meta.url).href, title: 'B1+Z1 Demo' },
                 { id: 2, src: new URL('@/assets/videos/g1_impulse_multiple.mp4', import.meta.url).href, title: 'G1 Impulse' },
-                { id: 3, src: new URL('@/assets/videos/go2_training_dist-world-force-setvel.mp4', import.meta.url).href, title: 'Go2 Training' },
+                { id: 3, src: new URL('@/assets/videos/FACET Go2 Training Dist (with caption).mp4', import.meta.url).href, title: 'Go2 Training' },
                 { id: 4, src: new URL('@/assets/videos/b1z1_training.mp4', import.meta.url).href, title: 'B1+Z1 Training' }
             ],
             headerLinks: [
                 // { text: 'PAPER', icon: 'mdi-file-pdf-box', href: 'https://github.com' },
-                // { text: 'ARXIV', icon: 'mdi-file-document', href: 'https://github.com' },
-                // { text: 'VIDEO', icon: 'mdi-video', href: 'https://github.com' },
-                // { text: 'CODE', icon: 'mdi-github', href: 'https://github.com' }
+                { text: 'ARXIV', icon: 'mdi-file-document', href: 'https://arxiv.org/abs/2505.06883' },
+                { text: 'VIDEO', icon: 'mdi-video', href: 'https://youtube.com' },
+                { text: 'CODE', icon: 'mdi-github', href: 'https://github.com' }
             ],
             show_step: 1,
             selectedSimVideo: 1,
