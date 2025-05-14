@@ -149,10 +149,16 @@
                         </v-list>
                     </v-sheet>
 
+                </v-col>
+            </v-row>
+
+            <v-row justify="center">
+                <v-col cols="12" md="10">
+                    <p class="text-h4 text-center mb-6">Online Demo</p>
                     <!-- Technical Summary Video -->
                     <v-sheet color="grey lighten-2" class="d-flex align-center justify-center mt-6">
                         <video width="100%" height="100%" controls style="max-height: 100%">
-                            <source src="@/assets/videos/tug_of_war.mp4" type="video/mp4">
+                            <source src="@/assets/videos/online_demo_1080p.mp4" type="video/mp4">
                         </video>
                     </v-sheet>
                 </v-col>
@@ -468,6 +474,7 @@
         </v-container>
 
         <!-- Team Section -->
+         <!-- 
         <v-container class="py-12 grey lighten-4" id="team">
             <v-row justify="center">
                 <v-col cols="12" md="8">
@@ -522,6 +529,7 @@
                 </v-col>
             </v-row>
         </v-container>
+         -->
 
         <!-- Footer -->
         <v-footer padless>
@@ -564,10 +572,10 @@ export default {
                 { id: 4, src: new URL('@/assets/videos/b1z1_training.mp4', import.meta.url).href, title: 'B1+Z1 Training' }
             ],
             headerLinks: [
-                { text: 'PAPER', icon: 'mdi-file-pdf-box', href: 'https://github.com' },
-                { text: 'ARXIV', icon: 'mdi-file-document', href: 'https://github.com' },
-                { text: 'VIDEO', icon: 'mdi-video', href: 'https://github.com' },
-                { text: 'CODE', icon: 'mdi-github', href: 'https://github.com' }
+                // { text: 'PAPER', icon: 'mdi-file-pdf-box', href: 'https://github.com' },
+                // { text: 'ARXIV', icon: 'mdi-file-document', href: 'https://github.com' },
+                // { text: 'VIDEO', icon: 'mdi-video', href: 'https://github.com' },
+                // { text: 'CODE', icon: 'mdi-github', href: 'https://github.com' }
             ],
             show_step: 1,
             selectedSimVideo: 1,
