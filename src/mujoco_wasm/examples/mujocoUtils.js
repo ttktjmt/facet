@@ -485,6 +485,12 @@ export async function loadSceneFromURL(mujoco, filename, parent) {
       bodies[b].name = textDecoder.decode(name_buffer);
 
       bodies[b].bodyID = b;
+
+      // TODO: this is hardcoded for go2. g1 should have a different base name.
+      if (bodies[b].name == "base") {
+        parent.pelvis_body_id = b; 
+        // for apply impulse
+      }
       bodies[b].has_custom_mesh = false;
     }
 

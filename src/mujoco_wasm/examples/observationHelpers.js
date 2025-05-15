@@ -49,9 +49,24 @@ class ImpedanceCommand {
     const base_pos_w = new THREE.Vector3(...this.simulation.qpos.subarray(0, 3));
     const command_vel_x = new THREE.Vector3(this.demo.params["command_vel_x"], 0, 0);
     const setpoint = command_vel_x.clone().multiplyScalar(kd / kp).add(base_pos_w);
+    if (this.demo.params["use_setpoint"]) {
+      setpoint.x = this.demo.ball.position.x;
+      setpoint.y = -this.demo.ball.position.z;
+      setpoint.z = 0.0;
+    } 
 
     // Transform setpoint to body frame
     let setpoint_b = setpoint.sub(base_pos_w).applyQuaternion(this.demo.quat.clone().invert());
+
+    if (this.demo.params["compliant_mode"]) {
+      setpoint_b.x = 0.0;
+      setpoint_b.y = 0.0;
+      setpoint_b.z = 0.0;
+    }
+
+    // clip the norm of setpoint_b to 2.0
+    let setpoint_b_norm = setpoint_b.length();
+    setpoint_b.normalize().multiplyScalar(Math.min(setpoint_b_norm, 2.0));
 
     const command = [
       setpoint_b.x, setpoint_b.y,

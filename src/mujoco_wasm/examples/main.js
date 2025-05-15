@@ -1,9 +1,8 @@
 import * as THREE from 'three';
 import * as ort from 'onnxruntime-web';
-import { GUI } from '../node_modules/three/examples/jsm/libs/lil-gui.module.min.js';
 import { OrbitControls } from '../node_modules/three/examples/jsm/controls/OrbitControls.js';
 import { DragStateManager } from './utils/DragStateManager.js';
-import { setupGUI, downloadExampleScenesFolder, loadSceneFromURL, getPosition, getQuaternion, toMujocoPos, standardNormal, reloadScene, reloadPolicy } from './mujocoUtils.js';
+import { downloadExampleScenesFolder, getPosition, getQuaternion, toMujocoPos, reloadScene, reloadPolicy } from './mujocoUtils.js';
 
 // // Load the MuJoCo Module
 // import load_mujoco from '../dist/mujoco_wasm.js';
@@ -21,7 +20,7 @@ export class MuJoCoDemo {
     mujoco.FS.mount(mujoco.MEMFS, { root: '.' }, '/working');
     const initialScene = "unitree_go2/scene.xml";
 
-    this.params = { scene: initialScene, paused: true, help: false, policy: './examples/checkpoints/policy-05-03_21-31.json', command_vel_x: 0.0, impedance_kp: 24.0 };
+    this.params = { scene: initialScene, paused: true, help: false, policy: './examples/checkpoints/policy-05-03_21-31.json', command_vel_x: 0.0, impedance_kp: 24.0, use_setpoint: true, impulse_remain_time: 0.0, compliant_mode: false};
     this.lastActions = null;
     this.isInferencing = false;
     this.observations = {}
@@ -45,6 +44,18 @@ export class MuJoCoDemo {
     this.ambientLight = new THREE.AmbientLight(0xffffff, 0.1);
     this.ambientLight.name = 'AmbientLight';
     this.scene.add(this.ambientLight);
+
+    const ballGeometry = new THREE.SphereGeometry(0.05, 16, 16);
+    const ballMaterial = new THREE.MeshStandardMaterial({ 
+        color: 0xef4444,
+        metalness: 0.2,
+        roughness: 0.2
+    });
+    this.ball = new THREE.Mesh(ballGeometry, ballMaterial);
+    this.ball.position.set(0, 0.5, 0);
+    this.ball.castShadow = true;
+    this.ball.bodyID = "setpoint";
+    this.scene.add(this.ball);
 
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
     this.renderer.setPixelRatio(window.devicePixelRatio);
@@ -158,10 +169,28 @@ export class MuJoCoDemo {
             let bodyID = dragged.bodyID;
             this.dragStateManager.update(); // Update the world-space force origin
             // TODO: add damping force, need to add body velocity sensor
-            let force = toMujocoPos(this.dragStateManager.currentWorld.clone().sub(this.dragStateManager.worldHit).multiplyScalar(25));
-            console.log("force", force);
-            let point = toMujocoPos(this.dragStateManager.worldHit.clone());
-            this.simulation.applyForce(force.x, force.y, force.z, 0, 0, 0, point.x, point.y, point.z, bodyID);
+            if (this.dragStateManager.physicsObject) {
+              if (this.dragStateManager.physicsObject.bodyID == "setpoint") {
+                this.ball.position.x = this.dragStateManager.currentWorld.x;
+                this.ball.position.z = this.dragStateManager.currentWorld.z;
+              } else{
+                let force = toMujocoPos(this.dragStateManager.offset.clone().multiplyScalar(25));
+                // console.log("force", force);
+                let point = toMujocoPos(this.dragStateManager.worldHit.clone());
+                this.simulation.applyForce(force.x, force.y, force.z, 0, 0, 0, point.x, point.y, point.z, bodyID);
+              }
+            }
+
+          }
+
+          // apply impulse
+          if (this.params["impulse_remain_time"] > 0) {
+            let force = new THREE.Vector3(0, 50, 0);
+            let point = new THREE.Vector3(0, 0, 0);
+            getPosition(this.simulation.xpos, this.pelvis_body_id, point, false);
+            // debugger;
+            this.simulation.applyForce(force.x, force.y, force.z, 0, 0, 0, point.x, point.y, point.z, this.pelvis_body_id);
+            this.params["impulse_remain_time"] -= this.timestep;
           }
 
           // Step simulation
