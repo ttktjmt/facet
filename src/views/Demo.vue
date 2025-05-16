@@ -262,7 +262,7 @@ export default {
         }
     },
     mounted() {
-        // this.init();
+        this.init();
         document.addEventListener('keydown', (event) => {
             if (event.code === 'Backspace') {
                 this.reset();
