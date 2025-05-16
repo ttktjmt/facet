@@ -10,19 +10,22 @@
                 </video>
 
                 <!-- Grey Overlay (middle layer) -->
-                <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(100, 100, 100, 0.4); z-index: 2;"></div>
+                <div
+                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(100, 100, 100, 0.4); z-index: 2;">
+                </div>
 
                 <!-- Left Side Navigation -->
-                <div style="position: fixed; left: 20px; top: 50%; transform: translateY(-50%); z-index: 11;">
-                    <v-btn v-for="(item, index) in navigationItems" :key="index" text block class="mb-2 justify-start text-start"
-                        @click="scrollToSection(item.target)">
+                <div v-if="$vuetify.display.mdAndUp"
+                    style="position: fixed; left: 20px; top: 50%; transform: translateY(-50%); z-index: 11;">
+                    <v-btn v-for="(item, index) in navigationItems" :key="index" text block
+                        class="mb-2 justify-start text-start" @click="scrollToSection(item.target)">
                         <v-icon left>{{ item.icon }}</v-icon>
                         {{ item.text }}
                     </v-btn>
                 </div>
 
                 <!-- Live Demo Button -->
-                <div class="hero-cta" @click="openLiveDemo">
+                <div v-if="$vuetify.display.smAndUp" class="hero-cta" @click="openLiveDemo">
                     <div class="gradient-mask"></div>
                     <div class="cta-content text-center">
                         <div style="width: 100%;">
@@ -37,14 +40,16 @@
                     <!-- Hero Content -->
                     <v-container class="d-flex flex-column justify-center align-center text-center"
                         style="height: 100%;">
-                        <h1 style="font-size: 1500%; line-height: 0.95; user-select: none; -webkit-user-select: none; -ms-user-select: none; font-family: Georgia;"
+                        <h1 style="font-size: 20vw; line-height: 0.95; user-select: none; -webkit-user-select: none; -ms-user-select: none;"
                             class="font-weight-light mb-4 text-white text-shadow">FACET
                         </h1>
-                        <h2 class="text-h2 font-weight-light mb-4 text-white text-shadow" style="font-family: Georgia;">
-                            <span class="highlight-letter">F</span>orce-<span class="highlight-letter">A</span>daptive 
+                        <h2 class="text-h2 font-weight-light mb-4 text-white text-shadow"
+                            style="font-size: 3.3vw !important;">
+                            <span class="highlight-letter">F</span>orce-<span class="highlight-letter">A</span>daptive
                             <span class="highlight-letter">C</span>ontrol
                             via
-                            Imp<span class="highlight-letter">e</span>dance<br /> R<span class="highlight-letter">e</span>ference 
+                            Imp<span class="highlight-letter">e</span>dance<br /> R<span
+                                class="highlight-letter">e</span>ference
                             <span class="highlight-letter">T</span>racking for
                             Legged Robots
                         </h2>
@@ -54,7 +59,7 @@
 
                 <!-- Header -->
                 <div style="position: fixed; top: 20px; right: 20px; z-index: 10;">
-                    <v-fade-transition>
+                    <v-fade-transition v-if="$vuetify.display.smAndUp">
                         <v-btn v-if="!isHeroVisible" color="primary" class="mx-1" @click="openLiveDemo">
                             <v-icon left>mdi-play-circle</v-icon>
                             Play FACET
@@ -180,8 +185,10 @@
                                 </template>
                                 <template #title>Impedance Control for Fixed-Base Manipulators</template>
                                 <template #subtitle>
-                                    <strong>FACET</strong> is inspired by impedance control. You control the robot by manipulating one end of
-                                    a virtual spring. The robot behaves like a mass connected on the other end of the spring.
+                                    <strong>FACET</strong> is inspired by impedance control. You control the robot by
+                                    manipulating one end of
+                                    a virtual spring. The robot behaves like a mass connected on the other end of the
+                                    spring.
                                 </template>
                                 <p>Imagine controlling a robot like you're handling a mass connected to a spring: you
                                     drag
@@ -315,7 +322,7 @@
         </v-container>
 
         <!-- Simulation Section -->
-        <v-container ref="simulationSection" fluid class="pa-0" id="simulation">
+        <v-container v-show="$vuetify.display.smAndUp" ref="simulationSection" fluid class="pa-0" id="simulation">
             <v-row no-gutters>
                 <v-col cols="12">
                     <!-- Full-page video container -->
@@ -478,49 +485,14 @@
                 <v-col cols="12" md="8">
                     <h2 class="text-h4 text-center mb-6">Our Team</h2>
                     <v-row justify="center">
-                        <v-col cols="12" sm="4" class="text-center">
-                            <a href="https://btx0424.github.io/" target="_blank" class="text-decoration-none">
+                        <v-col v-for="(member, idx) in teamMembers" :key="idx" cols="12" sm="4" class="text-center">
+                            <a :href="member.link" target="_blank" class="text-decoration-none">
                                 <v-avatar size="120" color="grey lighten-2" class="mb-4 clickable-avatar">
                                     <v-icon size="64" color="grey darken-2">mdi-account</v-icon>
+                                    <!-- <v-img :src="member.avatar" contain class="mb-4 clickable-avatar"></v-img> -->
                                 </v-avatar>
-                                <h3 class="text-h6">Botian Xu *</h3>
-                                <p class="caption">Tsinghua University</p>
-                            </a>
-                        </v-col>
-                        <v-col cols="12" sm="4" class="text-center">
-                            <a href="https://egalahad.github.io/" target="_blank" class="text-decoration-none">
-                                <v-avatar size="120" color="grey lighten-2" class="mb-4 clickable-avatar">
-                                    <v-icon size="64" color="grey darken-2">mdi-account</v-icon>
-                                </v-avatar>
-                                <h3 class="text-h6">Haoyang Weng *</h3>
-                                <p class="caption">Tsinghua University</p>
-                            </a>
-                        </v-col>
-                        <v-col cols="12" sm="4" class="text-center">
-                            <a href="https://me.axell.top/" target="_blank" class="text-decoration-none">
-                                <v-avatar size="120" color="grey lighten-2" class="mb-4 clickable-avatar">
-                                    <v-icon size="64" color="grey darken-2">mdi-account</v-icon>
-                                </v-avatar>
-                                <h3 class="text-h6">Qingzhou Lu *</h3>
-                                <p class="caption">Tsinghua University</p>
-                            </a>
-                        </v-col>
-                        <v-col cols="12" sm="4" class="text-center">
-                            <a href="https://yang-gao.weebly.com/" target="_blank" class="text-decoration-none">
-                                <v-avatar size="120" color="grey lighten-2" class="mb-4 clickable-avatar">
-                                    <v-icon size="64" color="grey darken-2">mdi-account</v-icon>
-                                </v-avatar>
-                                <h3 class="text-h6">Yang Gao</h3>
-                                <p class="caption">Tsinghua University</p>
-                            </a>
-                        </v-col>
-                        <v-col cols="12" sm="4" class="text-center">
-                            <a href="http://hxu.rocks/" target="_blank" class="text-decoration-none">
-                                <v-avatar size="120" color="grey lighten-2" class="mb-4 clickable-avatar">
-                                    <v-icon size="64" color="grey darken-2">mdi-account</v-icon>
-                                </v-avatar>
-                                <h3 class="text-h6">Huazhe Xu</h3>
-                                <p class="caption">Tsinghua University</p>
+                                <h3 class="text-h6">{{ member.name }}<span v-if="member.star"> *</span></h3>
+                                <p class="caption">{{ member.school }}</p>
                             </a>
                         </v-col>
                     </v-row>
@@ -580,6 +552,13 @@ export default {
             expanded: false,
             scrollTimeout: null,
             observer: null,
+            teamMembers: [
+                { name: 'Botian Xu', school: 'Tsinghua University', link: 'https://btx0424.github.io/', star: true, avatar: new URL('@/assets/images/botian.jpg', import.meta.url).href },
+                { name: 'Haoyang Weng', school: 'Tsinghua University', link: 'https://egalahad.github.io/', star: true, avatar: new URL('@/assets/images/haoyang.jpg', import.meta.url).href },
+                { name: 'Qingzhou Lu', school: 'Tsinghua University', link: 'https://me.axell.top/', star: true, avatar: new URL('@/assets/images/qingzhou.jpg', import.meta.url).href },
+                { name: 'Yang Gao', school: 'Tsinghua University', link: 'https://yang-gao.weebly.com/', star: false, avatar: new URL('@/assets/images/yang.jpg', import.meta.url).href },
+                { name: 'Huazhe Xu', school: 'Tsinghua University', link: 'http://hxu.rocks/', star: false, avatar: new URL('@/assets/images/huazhe.jpg', import.meta.url).href },
+            ],
         }
     },
     mounted() {
@@ -663,11 +642,6 @@ export default {
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;700&display=swap');
-
-h1,
-h2 {
-    font-family: 'Montserrat', sans-serif;
-}
 
 .v-sheet.v-card {
     transition: transform 0.2s;

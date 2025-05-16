@@ -16,4 +16,13 @@ export default createVuetify({
   theme: {
     defaultTheme: 'light',
   },
+  defaults: {
+    VSlider: {
+      color: 'primary',
+    },
+    VCheckbox: {
+      color: 'primary',
+    },
+
+  }
 })

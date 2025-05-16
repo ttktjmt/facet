@@ -17,96 +17,106 @@
                         <v-tab value="vanilla">Vanilla</v-tab>
                     </v-tabs>
 
-                    <v-card-text>
-                        <v-tabs-window v-model="policy">
-                            <v-tabs-window-item value="facet">
-                                <!-- Command Controls Group -->
-                                <v-card-text class="pb-0">
-                                    <v-checkbox v-model="use_setpoint" @update:modelValue="updateUseSetpointCallback()"
-                                        density="compact" hide-details>
-                                        <template v-slot:label>
+                    <v-tabs-window v-model="policy">
+                        <v-tabs-window-item value="facet">
+                            <!-- Command Controls Group -->
+                            <v-card-text>
+                                <div class="text-subtitle-2 mb-2">Target Controls</div>
+                                <v-checkbox v-model="use_setpoint" @update:modelValue="updateUseSetpointCallback()"
+                                    density="compact" hide-details>
+                                    <template v-slot:label>
+                                        <p style="line-height: 1.0;">
                                             Use Setpoint
-                                        </template>
-                                    </v-checkbox>
-                                    <div class="text-caption text-grey mb-2" v-if="use_setpoint">
-                                        Drag the red sphere to command target positions
-                                    </div>
-                                    <div class="text-caption text-grey mb-2" v-if="!use_setpoint">
-                                        Slide to command target velocities
-                                    </div>
-                                    <v-slider :disabled="use_setpoint || compliant_mode" v-model="command_vel_x" :min="-0.5" :max="1.5" :step="0.1"
-                                        label="velocity" hide-details @update:modelValue="updateCommandVelXCallback()">
-                                        <template v-slot:append>
-                                            <div class="text-caption">{{ command_vel_x }}</div>
-                                        </template>
-                                    </v-slider>
-                                </v-card-text>
+                                            <br />
+                                            <span class="text-caption text-grey" v-if="use_setpoint"
+                                                style="line-height: 1.0;">
+                                                Drag the red sphere to command target positions
+                                            </span>
+                                            <span class="text-caption text-grey" v-if="!use_setpoint"
+                                                style="line-height: 1.0;">
+                                                Slide to command target velocities
+                                            </span>
+                                        </p>
+                                    </template>
+                                </v-checkbox>
+                                <v-slider :disabled="use_setpoint || compliant_mode" v-model="command_vel_x" :min="-0.5"
+                                    :max="1.5" :step="0.1" label="velocity" hide-details
+                                    @update:modelValue="updateCommandVelXCallback()">
+                                    <template v-slot:append>
+                                        <div class="text-caption">{{ command_vel_x }}</div>
+                                    </template>
+                                </v-slider>
+                            </v-card-text>
+                            <v-divider></v-divider>
+                            <!-- Stiffness Controls Group -->
+                            <v-card-text>
+                                <div class="text-subtitle-2 mb-2">Stiffness Controls</div>
+                                <v-checkbox v-model="compliant_mode" @update:modelValue="updateCompliantModeCallback()"
+                                    density="compact" hide-details>
+                                    <template v-slot:label>
+                                        <p style="line-height: 1.0;">
+                                            Compliant Mode <br />
+                                            <span class="text-caption text-grey" v-if="compliant_mode"
+                                                style="line-height: 1.0;">
+                                                Stiffness is set to 0
+                                            </span>
+                                            <span class="text-caption text-grey" v-if="!compliant_mode"
+                                                style="line-height: 1.0;">
+                                                Slide to set stiffness
+                                            </span>
+                                        </p>
+                                    </template>
+                                </v-checkbox>
 
-                                <!-- Stiffness Controls Group -->
-                                <v-card-text class="pb-0">
-                                    <div class="text-subtitle-2 mb-2">Stiffness Controls</div>
-                                    <v-checkbox v-model="compliant_mode" @update:modelValue="updateCompliantModeCallback()"
-                                        density="compact" hide-details>
-                                        <template v-slot:label>
-                                            Compliant Mode
-                                        </template>
-                                    </v-checkbox>
-                                    <div class="text-caption text-grey mb-2" v-if="compliant_mode">
-                                        Stiffness is set to 0
-                                    </div>
-                                    <div class="text-caption text-grey mb-2" v-if="!compliant_mode">
-                                        Slide to set stiffness
-                                    </div>
-                                    <v-slider :disabled="compliant_mode" v-model="facet_kp" :min="0" :max="24" :step="1" label="stiffness" hide-details
-                                        @update:modelValue="updateFacetKpCallback()">
-                                        <template v-slot:append>
-                                            <div class="text-caption">{{ facet_kp }}</div>
-                                        </template>
-                                    </v-slider>
-                                </v-card-text>
+                                <v-slider :disabled="compliant_mode" v-model="facet_kp" :min="0" :max="24" :step="1"
+                                    label="stiffness" hide-details @update:modelValue="updateFacetKpCallback()">
+                                    <template v-slot:append>
+                                        <div class="text-caption">{{ facet_kp }}</div>
+                                    </template>
+                                </v-slider>
+                            </v-card-text>
 
-                            </v-tabs-window-item>
+                        </v-tabs-window-item>
 
-                            <v-tabs-window-item value="robust">
-                                <!-- add instructions -->
-                                <v-card-text class="pb-0">
-                                    <div class="text-caption text-grey mb-2">
-                                        Slide to set command velocity
-                                    </div>
-                                </v-card-text>
+                        <v-tabs-window-item value="robust">
+                            <!-- add instructions -->
+                            <v-card-text>
+                                <div class="text-caption text-grey mb-2">
+                                    Slide to set command velocity
+                                </div>
                                 <v-slider v-model="command_vel_x" :min="-0.5" :max="1.5" :step="0.1" label="velocity"
                                     hide-details @update:modelValue="updateCommandVelXCallback()">
                                     <template v-slot:append>
                                         <div class="text-caption">{{ command_vel_x }}</div>
                                     </template>
                                 </v-slider>
-                            </v-tabs-window-item>
+                            </v-card-text>
+                        </v-tabs-window-item>
 
-                            <v-tabs-window-item value="vanilla">
-                                <!-- add instructions -->
-                                <v-card-text class="pb-0">
-                                    <div class="text-caption text-grey mb-2">
-                                        Slide to set command velocity
-                                    </div>
-                                </v-card-text>
+                        <v-tabs-window-item value="vanilla">
+                            <!-- add instructions -->
+                            <v-card-text>
+                                <div class="text-caption text-grey mb-2">
+                                    Slide to set command velocity
+                                </div>
                                 <v-slider v-model="command_vel_x" :min="-0.5" :max="1.5" :step="0.1" label="velocity"
                                     hide-details @update:modelValue="updateCommandVelXCallback()">
                                     <template v-slot:append>
                                         <div class="text-caption">{{ command_vel_x }}</div>
                                     </template>
                                 </v-slider>
-                            </v-tabs-window-item>
-                        </v-tabs-window>
+                            </v-card-text>
+                        </v-tabs-window-item>
+                    </v-tabs-window>
 
-                    </v-card-text>
-
+                    <v-divider></v-divider>
                     <!-- Force Controls Group -->
                     <v-card-text class="pb-2">
                         <div class="text-subtitle-2 mb-2">Force Controls</div>
                         <div class="text-caption text-grey mb-2">
                             Drag on the robot to apply force
                         </div>
-                        <v-btn @click="StartImpulse" color="yellow" block>Impulse</v-btn>
+                        <v-btn @click="StartImpulse" color="primary" block>Impulse</v-btn>
                         <div class="text-caption text-grey mb-2">
                             Click the button to apply an impulse
                         </div>
@@ -114,7 +124,7 @@
                 </v-tabs-window-item>
 
 
-<!-- 
+                <!-- 
                 <v-tabs-window-item value="2">
                     <v-tabs v-model="policy" bg-color="primary" @update:modelValue="updatePolicyCallback()">
                         <v-tab value="facet">Facet</v-tab>
@@ -147,7 +157,7 @@
             </v-tabs-window>
 
             <!-- add reset button -->
-            <v-btn @click="reset" block text>Reset</v-btn>
+            <v-btn @click="reset" block text tile>Reset</v-btn>
         </v-card>
 
 
@@ -252,7 +262,7 @@ export default {
         }
     },
     mounted() {
-        this.init();
+        // this.init();
         document.addEventListener('keydown', (event) => {
             if (event.code === 'Backspace') {
                 this.reset();
