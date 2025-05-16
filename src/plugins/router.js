@@ -17,7 +17,7 @@ const routes = [
 ]
 
 const router = createRouter({
-    history: createWebHashHistory('/facet/'),
+    history: createWebHashHistory('/'),
     routes,
 })
 
