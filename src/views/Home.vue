@@ -487,9 +487,9 @@
                     <v-row justify="center">
                         <v-col v-for="(member, idx) in teamMembers" :key="idx" cols="12" sm="4" class="text-center">
                             <a :href="member.link" target="_blank" class="text-decoration-none">
-                                <v-avatar size="120" color="grey lighten-2" class="mb-4 clickable-avatar">
-                                    <v-icon size="64" color="grey darken-2">mdi-account</v-icon>
-                                    <!-- <v-img :src="member.avatar" contain class="mb-4 clickable-avatar"></v-img> -->
+                                <v-avatar size="120" color="grey lighten-2" class="mb-4">
+                                    <!-- <v-icon size="64" color="grey darken-2">mdi-account</v-icon> -->
+                                    <v-img :src="member.avatar" contain></v-img>
                                 </v-avatar>
                                 <h3 class="text-h6">{{ member.name }}<span v-if="member.star"> *</span></h3>
                                 <p class="caption">{{ member.school }}</p>
@@ -553,11 +553,11 @@ export default {
             scrollTimeout: null,
             observer: null,
             teamMembers: [
-                { name: 'Botian Xu', school: 'Tsinghua University', link: 'https://btx0424.github.io/', star: true, avatar: new URL('@/assets/images/botian.jpg', import.meta.url).href },
-                { name: 'Haoyang Weng', school: 'Tsinghua University', link: 'https://egalahad.github.io/', star: true, avatar: new URL('@/assets/images/haoyang.jpg', import.meta.url).href },
-                { name: 'Qingzhou Lu', school: 'Tsinghua University', link: 'https://me.axell.top/', star: true, avatar: new URL('@/assets/images/qingzhou.jpg', import.meta.url).href },
-                { name: 'Yang Gao', school: 'Tsinghua University', link: 'https://yang-gao.weebly.com/', star: false, avatar: new URL('@/assets/images/yang.jpg', import.meta.url).href },
-                { name: 'Huazhe Xu', school: 'Tsinghua University', link: 'http://hxu.rocks/', star: false, avatar: new URL('@/assets/images/huazhe.jpg', import.meta.url).href },
+                { name: 'Botian Xu', school: 'Tsinghua University', link: 'https://btx0424.github.io/', star: true, avatar: new URL('@/assets/images/team/botian.jpg', import.meta.url).href },
+                { name: 'Haoyang Weng', school: 'Tsinghua University', link: 'https://egalahad.github.io/', star: true, avatar: new URL('@/assets/images/team/haoyang.jpg', import.meta.url).href },
+                { name: 'Qingzhou Lu', school: 'Tsinghua University', link: 'https://me.axell.top/', star: true, avatar: new URL('@/assets/images/team/qingzhou.png', import.meta.url).href },
+                { name: 'Yang Gao', school: 'Tsinghua University', link: 'https://yang-gao.weebly.com/', star: false, avatar: new URL('@/assets/images/team/yanggao.jpg', import.meta.url).href },
+                { name: 'Huazhe Xu', school: 'Tsinghua University', link: 'http://hxu.rocks/', star: false, avatar: new URL('@/assets/images/team/huazhexu.png', import.meta.url).href },
             ],
         }
     },
