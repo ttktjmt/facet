@@ -4,10 +4,10 @@
         <section ref="heroSection">
             <v-container fluid class="hero-section pa-0" style="height: 100vh; position: relative;">
                 <!-- Video Background (bottom layer) -->
-                <video playsinline autoplay muted loop class="hero-video"
+                <LazyVideo playsinline autoplay muted loop class="hero-video"
                     style="position: absolute; min-width: 100%; min-height: 100%; width: auto; height: auto; z-index: 1;">
                     <source src="@/assets/videos/FACET Website Head.mp4" type="video/mp4">
-                </video>
+                </LazyVideo>
 
                 <!-- Grey Overlay (middle layer) -->
                 <div
@@ -31,7 +31,8 @@
                         <div style="width: 100%;">
                             <p class="cta-text">Play FACET<br />In Your Browser</p>
                         </div>
-                        <div style="width: 100%;"><v-icon class="arrow-icon" large>mdi-arrow-right-bold</v-icon></div>
+                        <div style="width: 100%;"><v-icon class="arrow-icon" large>mdi-arrow-right-bold</v-icon>
+                        </div>
                     </div>
                 </div>
 
@@ -48,8 +49,7 @@
                             <span class="highlight-letter">F</span>orce-<span class="highlight-letter">A</span>daptive
                             <span class="highlight-letter">C</span>ontrol
                             via
-                            Imp<span class="highlight-letter">e</span>dance<br /> R<span
-                                class="highlight-letter">e</span>ference
+                            Imp<span class="highlight-letter">e</span>dance<br /> Reference
                             <span class="highlight-letter">T</span>racking for
                             Legged Robots
                         </h2>
@@ -162,9 +162,9 @@
                     <p class="text-h4 text-center mb-6">Online Demo</p>
                     <!-- Technical Summary Video -->
                     <v-sheet color="grey lighten-2" class="d-flex align-center justify-center mt-6">
-                        <video width="100%" height="100%" controls style="max-height: 100%">
+                        <LazyVideo width="100%" height="100%" style="max-height: 100%" autoplay loop muted>
                             <source src="@/assets/videos/online_demo_1080p.mp4" type="video/mp4">
-                        </video>
+                        </LazyVideo>
                     </v-sheet>
                 </v-col>
             </v-row>
@@ -204,11 +204,11 @@
                                     external
                                     forces are
                                     applied.</p>
-                                <vue-mathjax formula="$f_{spring} = K_p(x_{des} - x) + K_d(\dot{x}_{des} - \dot{x})$"
-                                    class="text-center my-2" />
-                                <p>where <vue-mathjax formula="$K_p$" /> is spring stiffness,
-                                    <vue-mathjax formula="$K_d$" /> is damping, and
-                                    <vue-mathjax formula="$\mathbf{x}_{des}, \dot{\mathbf{x}}_{des}$" /> are desired
+                                <VueLatex expression="f_{spring} = K_p(x_{des} - x) + K_d(\dot{x}_{des} - \dot{x})"
+                                    display-mode />
+                                <p>where <VueLatex expression="K_p" /> is spring stiffness,
+                                    <VueLatex expression="K_d" /> is damping, and
+                                    <VueLatex expression="\mathbf{x}_{des}, \dot{\mathbf{x}}_{des}" /> are desired
                                     position and
                                     velocity.
                                 </p>
@@ -236,9 +236,9 @@
                                     "soft"
                                     tracking
                                     of its target position while naturally responding to forces.</p>
-                                <vue-mathjax
-                                    formula="$m\ddot{\mathbf{x}}_{\text{ref}} = K_p(\mathbf{x}_{\text{des}} - \mathbf{x}_{\text{ref}}) + K_d(\dot{\mathbf{x}}_{\text{des}} - \dot{\mathbf{x}}_{\text{ref}}) + f_{\text{ext}}$"
-                                    class="text-center my-4" />
+                                <VueLatex
+                                    expression="m\ddot{\mathbf{x}}_{\text{ref}} = K_p(\mathbf{x}_{\text{des}} - \mathbf{x}_{\text{ref}}) + K_d(\dot{\mathbf{x}}_{\text{des}} - \dot{\mathbf{x}}_{\text{ref}}) + f_{\text{ext}}"
+                                    display-mode />
                                 <p>The robot learns to match this reference behavior through reinforcement learning,
                                     enabling
                                     control
@@ -258,35 +258,30 @@
                                     open-loop and
                                     closed-loop
                                     tracking of the reference model.</template>
-                                <p>Concretely, the reference state at time <vue-mathjax formula="$t$" /> is obtained by
+                                <p>Concretely, the reference state at time <VueLatex expression="t" /> is obtained by
                                     integrating from an
-                                    initial time <vue-mathjax formula="$t'$" />:</p>
-                                <vue-mathjax :block="true"
-                                    formula="\begin{cases} \mathbf{x}_{\text{ref}}(t) = \mathbf{x}_{\text{sim}}(t') + \int_{t'}^t \dot{\mathbf{x}}_{\text{ref}}(t)dt \\ \dot{\mathbf{x}}_{\text{ref}}(t) = \dot{\mathbf{x}}_{\text{sim}}(t') + \int_{t'}^t \ddot{\mathbf{x}}_{\text{ref}}(t)dt \end{cases}"
-                                    class="text-center mb-4" />
+                                    initial time <VueLatex expression="t'" />:</p>
+                                <VueLatex expression="\begin{cases} \mathbf{x}_{\text{ref}}(t) = \mathbf{x}_{\text{sim}}(t') + \int_{t'}^t \dot{\mathbf{x}}_{\text{ref}}(t)dt \\ \dot{\mathbf{x}}_{\text{ref}}(t) = \dot{\mathbf{x}}_{\text{sim}}(t') + \int_{t'}^t \ddot{\mathbf{x}}_{\text{ref}}(t)dt \end{cases}"
+                                    display-mode />
                                 <p>This approach addresses key challenges:
                                 </p>
                                 <ul class="pa-4">
-                                    <li>Open-loop tracking (<vue-mathjax formula="$t' = 0$" />) follows ideal dynamics
+                                    <li>Open-loop tracking (<VueLatex expression="t' = 0" />) follows ideal dynamics
                                         but ignores physical
                                         constraints, leading to diverging tracking targets that are hard to follow,
                                     </li>
-                                    <li>closed-loop tracking (<vue-mathjax formula="$t' = t - \Delta t$" />) is adaptive
+                                    <li>closed-loop tracking (<VueLatex expression="t' = t - \Delta t" />) is adaptive
                                         but can be noisy.</li>
                                 </ul>
                                 <p class="mb-4">
                                     The final reward combines multiple tracking targets from different starting points
-                                    <vue-mathjax formula="$t'$" />:
+                                    <VueLatex expression="t'" />:
                                 </p>
-                                <vue-mathjax :block="true"
-                                    formula="$r_t  = \frac{1}{M} \sum_{t'} \exp(-||\mathbf{x}_{\text{sim}}(t) - \mathbf{x}^{t'}_{\text{ref}}(t)||^2_2) \\
-                                        \; \; \; + \exp(-||\dot{\mathbf{x}}_{\text{sim}}(t) - \dot{\mathbf{x}}^{t'}_{\text{ref}}(t)||^2_2)$"
-                                    class="text-center mb-2" />
+                                <VueLatex expression="r_t = \frac{1}{M} \sum_{t'} \exp(-||\mathbf{x}_{\text{sim}}(t) - \mathbf{x}^{t'}_{\text{ref}}(t)||^2_2) \\ + \exp(-||\dot{\mathbf{x}}_{\text{sim}}(t) - \dot{\mathbf{x}}^{t'}_{\text{ref}}(t)||^2_2)" display-mode />
                                 <p>
-                                    , where <vue-mathjax
-                                        formula="$t' \in \{t-8\Delta t, t-16\Delta t, t-32\Delta t\}$" /> in our
+                                    , where <VueLatex expression="t' \in \{t-8\Delta t, t-16\Delta t, t-32\Delta t\}" /> in our
                                     implementation,
-                                    with <vue-mathjax formula="$\Delta t = 0.02s$" /> being the control interval.
+                                    with <VueLatex expression="\Delta t = 0.02s" /> being the control interval.
                                 </p>
                             </ExpansionCard>
                         </v-col>
@@ -303,14 +298,14 @@
                                     <strong>FACET</strong> uses a two-stage teacher-student training approach to
                                     facilitate learning and ensure successful sim2real transfer.
                                 </template>
-                                <p>In the first stage, we train a teacher policy <vue-mathjax
-                                        formula="$\pi^{\text{teacher}}$" /> with
-                                    access to privileged information alongside a state estimator <vue-mathjax
-                                        formula="$\mathcal{E}^{\text{est}}(o_{:t})$" /> that predicts features from
+                                <p>In the first stage, we train a teacher policy <VueLatex
+                                        expression="\pi^{\text{teacher}}" /> with
+                                    access to privileged information alongside a state estimator <VueLatex
+                                        expression="\mathcal{E}^{\text{est}}(o_{:t})" /> that predicts features from
                                     available
                                     sensors.</p>
-                                <p>In the second stage, a student policy <vue-mathjax
-                                        formula="$\pi^{\text{student}}$" /> is
+                                <p>In the second stage, a student policy <VueLatex
+                                        expression="\pi^{\text{student}}" /> is
                                     initialized from the teacher's parameters and fine-tuned using PPO to work with the
                                     estimated
                                     features.</p>
@@ -330,10 +325,10 @@
                         <!-- Video display -->
                         <div v-for="video in simulationVideos" :key="video.id">
                             <v-fade-transition>
-                                <video v-if="selectedSimVideo == video.id" width="100%" height="100%" autoplay loop
+                                <LazyVideo v-if="selectedSimVideo == video.id" width="100%" height="100%" autoplay loop
                                     muted style="object-fit: cover; position: absolute; top: 0; left: 0;">
                                     <source :src="video.src" type="video/mp4">
-                                </video>
+                                </LazyVideo>
                             </v-fade-transition>
                         </div>
 
@@ -357,57 +352,13 @@
             <v-row justify="center">
                 <v-col cols="12" md="10">
                     <h2 class="text-h4 text-center mb-6">Real-World Results</h2>
-                    <v-row>
-                        <v-col cols="12" md="6">
-                            <h3 class="text-h6">Compliant to Perturb and Pushes (FACET Policy)</h3>
+                    <v-row v-for="(row, rowIdx) in realWorldRows" :key="rowIdx">
+                        <v-col v-for="(item, idx) in row" :key="idx" cols="12" md="6">
+                            <h3 class="text-h6">{{ item.title }}</h3>
                             <v-sheet color="grey lighten-2" class="d-flex align-center justify-center mb-4">
-                                <video width="100%" height="100%" autoplay loop muted>
-                                    <source src="@/assets/videos/facet-push-compliant.mp4" type="video/mp4">
-                                </video>
-                            </v-sheet>
-                        </v-col>
-                        <v-col cols="12" md="6">
-                            <h3 class="text-h6">Stiff Response of Baselines (Robust Policy)</h3>
-                            <v-sheet color="grey lighten-2" class="d-flex align-center justify-center mb-4">
-                                <video width="100%" height="100%" autoplay loop muted>
-                                    <source src="@/assets/videos/velocity-push-stiff.mp4" type="video/mp4">
-                                </video>
-                            </v-sheet>
-                        </v-col>
-                    </v-row>
-                    <v-row>
-                        <v-col cols="12" md="6">
-                            <h3 class="text-h6">Robust to Large Forces (0.3x)</h3>
-                            <v-sheet color="grey lighten-2" class="d-flex align-center justify-center mb-4">
-                                <video width="100%" height="100%" autoplay loop muted>
-                                    <source src="@/assets/videos/facet-side_pull-success-0.3x.mp4" type="video/mp4">
-                                </video>
-                            </v-sheet>
-                        </v-col>
-                        <v-col cols="12" md="6">
-                            <h3 class="text-h6">Failures of Baselines (0.3x)</h3>
-                            <v-sheet color="grey lighten-2" class="d-flex align-center justify-center mb-4">
-                                <video width="100%" height="100%" autoplay loop muted>
-                                    <source src="@/assets/videos/default-side_pull-fail-0.3x.mp4" type="video/mp4">
-                                </video>
-                            </v-sheet>
-                        </v-col>
-                    </v-row>
-                    <v-row>
-                        <v-col cols="12" md="6">
-                            <h3 class="text-h6">Compliant Following</h3>
-                            <v-sheet color="grey lighten-2" class="d-flex align-center justify-center mb-4">
-                                <video width="100%" height="100%" autoplay loop muted>
-                                    <source src="@/assets/videos/compliant_following.mp4" type="video/mp4">
-                                </video>
-                            </v-sheet>
-                        </v-col>
-                        <v-col cols="12" md="6">
-                            <h3 class="text-h6">Large Force Pulling</h3>
-                            <v-sheet color="grey lighten-2" class="d-flex align-center justify-center mb-4">
-                                <video width="100%" height="100%" autoplay loop muted>
-                                    <source src="@/assets/videos/large_force_pulling.mp4" type="video/mp4">
-                                </video>
+                                <LazyVideo width="100%" height="100%" autoplay loop muted>
+                                    <source :src="item.src" type="video/mp4">
+                                </LazyVideo>
                             </v-sheet>
                         </v-col>
                     </v-row>
@@ -519,10 +470,11 @@
 </template>
 
 <script>
-import VueMathjax from 'vue-mathjax-next'
+import LazyVideo from '@/components/LazyVideo.vue'
+import { VueLatex } from 'vatex'
 export default {
     name: 'App',
-    components: { VueMathjax },
+    components: { LazyVideo, VueLatex },
     data() {
         return {
             isHeroVisible: true,
@@ -558,6 +510,20 @@ export default {
                 { name: 'Qingzhou Lu', school: 'Tsinghua University', link: 'https://me.axell.top/', star: true, avatar: new URL('@/assets/images/team/qingzhou.png', import.meta.url).href },
                 { name: 'Yang Gao', school: 'Tsinghua University', link: 'https://yang-gao.weebly.com/', star: false, avatar: new URL('@/assets/images/team/yanggao.jpg', import.meta.url).href },
                 { name: 'Huazhe Xu', school: 'Tsinghua University', link: 'http://hxu.rocks/', star: false, avatar: new URL('@/assets/images/team/huazhexu.png', import.meta.url).href },
+            ],
+            realWorldRows: [
+                [
+                    { title: 'Compliant to Perturb and Pushes (FACET Policy)', src: new URL('@/assets/videos/facet-push-compliant.mp4', import.meta.url).href },
+                    { title: 'Stiff Response of Baselines (Robust Policy)', src: new URL('@/assets/videos/velocity-push-stiff.mp4', import.meta.url).href },
+                ],
+                [
+                    { title: 'Robust to Large Forces (0.3x)', src: new URL('@/assets/videos/facet-side_pull-success-0.3x.mp4', import.meta.url).href },
+                    { title: 'Failures of Baselines (0.3x)', src: new URL('@/assets/videos/default-side_pull-fail-0.3x.mp4', import.meta.url).href },
+                ],
+                [
+                    { title: 'Compliant Following', src: new URL('@/assets/videos/compliant_following.mp4', import.meta.url).href },
+                    { title: 'Large Force Pulling', src: new URL('@/assets/videos/large_force_pulling.mp4', import.meta.url).href },
+                ],
             ],
         }
     },
@@ -643,71 +609,12 @@ export default {
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;700&display=swap');
 
-.v-sheet.v-card {
-    transition: transform 0.2s;
-}
-
-.v-sheet.v-card:hover {
-    transform: translateY(-4px);
-}
-
 .position-relative {
     position: relative;
 }
 
 .position-absolute {
     position: absolute;
-}
-
-/* Remove app-bar background and add floating button styles */
-.v-app-bar {
-    background: transparent !important;
-    box-shadow: none !important;
-}
-
-.v-app-bar .v-btn {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(5px);
-    border-radius: 8px;
-    margin: 0 4px;
-    transition: all 0.3s ease;
-}
-
-.v-app-bar .v-btn:hover {
-    background: rgba(255, 255, 255, 0.9) !important;
-    color: black !important;
-    transform: translateY(-2px);
-}
-
-.v-app-bar a {
-    color: white !important;
-    text-decoration: none;
-}
-
-.v-app-bar .v-btn:hover a {
-    color: black !important;
-}
-
-.v-card.overflow-y-auto {
-    overflow-y: auto;
-    scrollbar-width: thin;
-    /* For Firefox */
-    scrollbar-color: rgba(0, 0, 0, 0.3) transparent;
-    /* For Firefox */
-}
-
-/* For Webkit browsers (Chrome, Safari) */
-.v-card.overflow-y-auto::-webkit-scrollbar {
-    width: 6px;
-}
-
-.v-card.overflow-y-auto::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.v-card.overflow-y-auto::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, 0.3);
-    border-radius: 3px;
 }
 
 .text-shadow {
@@ -717,41 +624,7 @@ export default {
 /* MainLayout styles */
 .hero-section {
     overflow: hidden;
-}
-
-.hero-background {
-    transition: background 0.5s ease;
-}
-
-/* Common style for all navigation buttons */
-.nav-btn {
-    background: rgba(255, 255, 255, 0.3) !important;
-    backdrop-filter: blur(5px);
-    transition: all 0.3s ease;
-    opacity: 0.7;
-    position: relative;
-    z-index: 11;
-}
-
-.nav-btn:hover {
-    background: rgba(255, 255, 255, 0.9) !important;
-    opacity: 1;
-}
-
-/* Left navigation specific styles */
-.left-nav-btn {
-    min-width: 150px;
-    text-align: left !important;
-    justify-content: flex-start !important;
-}
-
-.left-nav-btn:hover {
-    transform: translateX(5px);
-}
-
-/* Header navigation specific styles */
-.header-nav-btn:hover {
-    transform: translateY(-2px);
+    background-color: #000; 
 }
 
 :root {
@@ -830,14 +703,6 @@ export default {
 </style>
 
 <style>
-.clickable-avatar {
-    transition: transform 0.2s ease-in-out;
-}
-
-.clickable-avatar:hover {
-    transform: scale(1.05);
-}
-
 .text-decoration-none {
     text-decoration: none;
     color: inherit;

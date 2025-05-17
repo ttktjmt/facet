@@ -159,9 +159,26 @@
             <!-- add reset button -->
             <v-btn @click="reset" block text tile>Reset</v-btn>
         </v-card>
-
-
     </div>
+    <v-dialog :model-value="state === 0" persistent max-width="600px" scrollable>
+        <v-card title="Loading Simulation Environment">
+            <v-card-text>
+                <v-progress-linear indeterminate color="primary"></v-progress-linear>
+                Loading MuJoCo and ONNX, please wait
+            </v-card-text>
+        </v-card>
+    </v-dialog>
+    <v-dialog :model-value="state < 0" persistent max-width="600px" scrollable>
+        <v-card title="Simulation Environment Loading Error">
+            <v-card-text>
+                <span v-if="state == -1"> Unexpected JS error, please refresh the page <br /> {{ extra_error_message }}
+                </span>
+                <span v-if="state == -2"> Your browser does not support WebAssembly, please use latest
+                    Chrome/Edge/Firefox </span>
+            </v-card-text>
+        </v-card>
+    </v-dialog>
+
 </template>
 
 
@@ -190,14 +207,30 @@ export default {
         command_vel_x: 0.0,
         use_setpoint: true,
         compliant_mode: false,
+        state: 0, // 0: loading, 1: running, -1: error by js, -2: error by wasm
+        extra_error_message: "",
+        keydown_listener: null,
     }),
     methods: {
         async init() {
-            const mujoco = await load_mujoco();
-            this.demo = new MuJoCoDemo(mujoco);
-            await this.demo.init();
-            this.demo.main_loop();
-            this.demo.params["paused"] = false;
+            // check if browser supports WebAssembly
+            if (typeof WebAssembly !== "object" || typeof WebAssembly.instantiate !== "function") {
+                this.state = -2;
+                return;
+            }
+
+            try {
+                const mujoco = await load_mujoco();
+                this.demo = new MuJoCoDemo(mujoco);
+                await this.demo.init();
+                this.demo.main_loop();
+                this.demo.params["paused"] = false;
+                this.state = 1;
+            } catch (error) {
+                this.state = -1;
+                this.extra_error_message = error.toString();
+                console.error(error);
+            }
         },
         updateTaskCallback() {
             console.log(this.task);
@@ -263,15 +296,15 @@ export default {
     },
     mounted() {
         this.init();
-        document.addEventListener('keydown', (event) => {
+        this.keydown_listener = document.addEventListener('keydown', (event) => {
             if (event.code === 'Backspace') {
                 this.reset();
             }
         });
     },
     beforeUnmount() {
-        this.stopPlotUpdates();
-        document.removeEventListener('keydown');
+        // this.stopPlotUpdates();
+        document.removeEventListener('keydown', this.keydown_listener);
     }
 }
 </script>
