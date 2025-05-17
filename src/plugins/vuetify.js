@@ -23,6 +23,9 @@ export default createVuetify({
     VCheckbox: {
       color: 'primary',
     },
+    VImg: {
+      eager: true,
+    },
 
   }
 })
