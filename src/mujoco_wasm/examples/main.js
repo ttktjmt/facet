@@ -317,7 +317,7 @@ export class MuJoCoDemo {
 
       if (this.lastActions !== null) {
         for (let i = 0; i < this.lastActions.length; i++) {
-          this.lastActions[i] = this.lastActions[i] * 0.8 + result["action"][i] * 0.2;
+          this.lastActions[i] = this.lastActions[i] * 0.2 + result["action"][i] * 0.8;
         }
       } else {
         this.lastActions = result["action"];
