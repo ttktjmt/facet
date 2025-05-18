@@ -5,8 +5,9 @@
     <div style="position: fixed; top: 20px; right: 20px; z-index: 1000; width: 300px;">
         <v-card>
             <v-tabs v-model="task" bg-color="primary" @update:modelValue="updateTaskCallback()">
-                <v-tab value="1">Go2 Walking</v-tab>
-                <!-- <v-tab value="2">Go2 Wall</v-tab> -->
+                <v-tab value="1">Go2</v-tab>
+                <v-tab value="2">B1+Z1</v-tab>
+                <v-tab value="3">G1</v-tab>
             </v-tabs>
 
             <v-tabs-window v-model="task">
@@ -22,7 +23,7 @@
                             <!-- Command Controls Group -->
                             <v-card-text>
                                 <div class="text-subtitle-2 mb-2">Target Controls</div>
-                                <v-checkbox v-model="use_setpoint" @update:modelValue="updateUseSetpointCallback()"
+                                <v-checkbox :disabled="compliant_mode" v-model="use_setpoint" @update:modelValue="updateUseSetpointCallback()"
                                     density="compact" hide-details>
                                     <template v-slot:label>
                                         <p style="line-height: 1.0;">
@@ -123,6 +124,17 @@
                     </v-card-text>
                 </v-tabs-window-item>
 
+                <v-tabs-window-item value="2">
+                    <v-card-text>
+                        Release soon
+                    </v-card-text>
+                </v-tabs-window-item>
+
+                <v-tabs-window-item value="3">
+                    <v-card-text>
+                        Release soon
+                    </v-card-text>
+                </v-tabs-window-item>
 
                 <!-- 
                 <v-tabs-window-item value="2">
@@ -159,6 +171,16 @@
             <!-- add reset button -->
             <v-btn @click="reset" block text tile>Reset</v-btn>
         </v-card>
+    </div>
+        <!-- 左上角返回主页按钮 -->
+    <div style="position: fixed; top: 20px; left: 20px; z-index: 1000;">
+        <v-btn
+            color="primary"
+            @click="goHome"
+            elevation="2"
+        >
+            <v-icon>mdi-arrow-left</v-icon>Go back
+        </v-btn>
     </div>
     <v-dialog :model-value="state === 0" persistent max-width="600px" scrollable>
         <v-card title="Loading Simulation Environment">
@@ -233,6 +255,7 @@ export default {
             }
         },
         updateTaskCallback() {
+            return
             console.log(this.task);
 
             this.demo.params["paused"] = true;
@@ -292,7 +315,10 @@ export default {
         StartImpulse() {
             console.log("start impulse");
             this.demo.params["impulse_remain_time"] = 0.1;
-        }
+        },
+        goHome() {
+            this.$router.push({ path: '/' });
+        },
     },
     mounted() {
         this.init();

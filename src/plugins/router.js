@@ -21,4 +21,14 @@ const router = createRouter({
     routes,
 })
 
+// add a contemportary fix for memory leak problem
+router.beforeEach((to, from, next) => {
+    if (from.name && to.fullPath !== from.fullPath) {
+        window.location.hash = '#' + to.fullPath
+        window.location.reload()
+    } else {
+        next();
+    }
+});
+
 export default router 
