@@ -4,9 +4,9 @@
         <section ref="heroSection">
             <v-container fluid class="hero-section pa-0" style="height: 100vh; position: relative;">
                 <!-- Video Background (bottom layer) -->
-                <LazyVideo playsinline autoplay muted loop class="hero-video"
+                <LazyVideo :showLoading="false" playsinline autoplay muted loop class="hero-video"
                     style="position: absolute; min-width: 100%; min-height: 100%; width: auto; height: auto; z-index: 1;">
-                    <source src="@/assets/videos/FACET Website Head.mp4" type="video/mp4">
+                    <source src="@/assets/videos_compressed/FACET Website Head.mp4" type="video/mp4">
                 </LazyVideo>
 
                 <!-- Grey Overlay (middle layer) -->
@@ -65,7 +65,7 @@
                             Play FACET
                         </v-btn>
                     </v-fade-transition>
-                    <v-btn v-for="(link, index) in headerLinks" :key="index" :href="link.href" target="_blank" text
+                    <v-btn v-for="(link, index) in headerLinks" :key="index" :href="link.href" target="_blank" text :disabled="link.disabled"
                         class="mx-1">
                         <v-icon left>{{ link.icon }}</v-icon>
                         {{ link.text }}
@@ -165,7 +165,7 @@
                     <!-- Technical Summary Video -->
                     <v-sheet color="grey lighten-2" class="d-flex align-center justify-center mt-6">
                         <LazyVideo width="100%" height="100%" style="max-height: 100%" autoplay loop muted>
-                            <source src="@/assets/videos/online_demo_1080p.mp4" type="video/mp4">
+                            <source src="@/assets/videos_compressed/online_demo_1080p.mp4" type="video/mp4">
                         </LazyVideo>
                     </v-sheet>
                     <div class="mt-6 mb-4 text-center text-h6">
@@ -452,7 +452,7 @@
                                     <v-img :src="member.avatar" contain></v-img>
                                 </v-avatar>
                                 <h3 class="text-h6">{{ member.name }}<span v-if="member.star"> *</span></h3>
-                                <p class="caption">{{ member.school }}</p>
+                                <p class="caption" v-html="member.school"></p>
                             </a>
                         </v-col>
                     </v-row>
@@ -466,10 +466,9 @@
                 <v-row justify="center">
                     <v-col cols="12" md="8" class="text-center">
                         <p class="mb-4">
-                            Website template modified from original sources
-                        </p>
-                        <p>
-                            Licensed under Creative Commons Attribution-ShareAlike 4.0
+                            © 2025 The FACET Team, Tsinghua University.<br/>
+                            Built with <a href="https://vuetifyjs.com/en/" target="_blank">Vuetify</a>, <a href="https://github.com/Axellwppr/mujoco_wasm_332" target="_blank">MuJoCo WASM</a>, and <a href="https://www.npmjs.com/package/onnxruntime-web" target="_blank">ONNX Runtime Web</a>. <br/>
+                            <a href="https://github.com/Facet-Team/facet" target="_blank">Website content</a> licensed under MIT License. Third-party libraries retain their original licenses.
                         </p>
                     </v-col>
                 </v-row>
@@ -496,16 +495,16 @@ export default {
                 { text: ' Team', icon: 'mdi-account-group', target: 'team' }
             ],
             simulationVideos: [
-                { id: 1, src: new URL('@/assets/videos/FACET B1Z1 Demo (with caption).mp4', import.meta.url).href, title: 'B1+Z1 Demo' },
-                { id: 2, src: new URL('@/assets/videos/g1_impulse_multiple.mp4', import.meta.url).href, title: 'G1 Impulse' },
-                { id: 3, src: new URL('@/assets/videos/FACET Go2 Training Dist (with caption).mp4', import.meta.url).href, title: 'Go2 Training' },
-                { id: 4, src: new URL('@/assets/videos/b1z1_training.mp4', import.meta.url).href, title: 'B1+Z1 Training' }
+                { id: 1, src: new URL('@/assets/videos_compressed/FACET B1Z1 Demo (with caption).mp4', import.meta.url).href, title: 'B1+Z1 Demo' },
+                { id: 2, src: new URL('@/assets/videos_compressed/g1_impulse_multiple.mp4', import.meta.url).href, title: 'G1 Impulse' },
+                { id: 3, src: new URL('@/assets/videos_compressed/FACET Go2 Training Dist (with caption).mp4', import.meta.url).href, title: 'Go2 Training' },
+                { id: 4, src: new URL('@/assets/videos_compressed/b1z1_training.mp4', import.meta.url).href, title: 'B1+Z1 Training' }
             ],
             headerLinks: [
                 // { text: 'PAPER', icon: 'mdi-file-pdf-box', href: 'https://github.com' },
-                { text: 'ARXIV', icon: 'mdi-file-document', href: 'https://arxiv.org/abs/2505.06883' },
-                { text: 'VIDEO', icon: 'mdi-video', href: 'https://youtube.com' },
-                { text: 'CODE', icon: 'mdi-github', href: 'https://github.com' }
+                { text: 'ARXIV', icon: 'mdi-file-document', href: 'https://arxiv.org/abs/2505.06883', disabled: false },
+                { text: 'VIDEO(Coming Soon)', icon: 'mdi-video', href: '#', disabled: true },
+                { text: 'CODE(Coming Soon)', icon: 'mdi-github', href: '#', disabled: true }
             ],
             show_step: 1,
             selectedSimVideo: 1,
@@ -517,21 +516,21 @@ export default {
                 { name: 'Botian Xu', school: 'Tsinghua University', link: 'https://btx0424.github.io/', star: true, avatar: new URL('@/assets/images/team/botian.jpg', import.meta.url).href },
                 { name: 'Haoyang Weng', school: 'Tsinghua University', link: 'https://egalahad.github.io/', star: true, avatar: new URL('@/assets/images/team/haoyang.jpg', import.meta.url).href },
                 { name: 'Qingzhou Lu', school: 'Tsinghua University', link: 'https://me.axell.top/', star: true, avatar: new URL('@/assets/images/team/qingzhou.png', import.meta.url).href },
-                { name: 'Yang Gao', school: 'Tsinghua University', link: 'https://yang-gao.weebly.com/', star: false, avatar: new URL('@/assets/images/team/yanggao.jpg', import.meta.url).href },
-                { name: 'Huazhe Xu', school: 'Tsinghua University', link: 'http://hxu.rocks/', star: false, avatar: new URL('@/assets/images/team/huazhexu.png', import.meta.url).href },
+                { name: 'Yang Gao', school: 'Tsinghua University<br/>Shanghai Qizhi Institute<br/>Shanghai AI Lab', link: 'https://yang-gao.weebly.com/', star: false, avatar: new URL('@/assets/images/team/yanggao.jpg', import.meta.url).href },
+                { name: 'Huazhe Xu', school: 'Tsinghua University<br/>Shanghai Qizhi Institute<br/>Shanghai AI Lab', link: 'http://hxu.rocks/', star: false, avatar: new URL('@/assets/images/team/huazhexu.png', import.meta.url).href },
             ],
             realWorldRows: [
                 [
-                    { title: 'Compliant to Perturb and Pushes (FACET Policy)', src: new URL('@/assets/videos/facet-push-compliant.mp4', import.meta.url).href },
-                    { title: 'Stiff Response of Baselines (Robust Policy)', src: new URL('@/assets/videos/velocity-push-stiff.mp4', import.meta.url).href },
+                    { title: 'Compliant to Perturb and Pushes (FACET Policy)', src: new URL('@/assets/videos_compressed/facet-push-compliant.mp4', import.meta.url).href },
+                    { title: 'Stiff Response of Baselines (Robust Policy)', src: new URL('@/assets/videos_compressed/velocity-push-stiff.mp4', import.meta.url).href },
                 ],
                 [
-                    { title: 'Robust to Large Forces (0.3x)', src: new URL('@/assets/videos/facet-side_pull-success-0.3x.mp4', import.meta.url).href },
-                    { title: 'Failures of Baselines (0.3x)', src: new URL('@/assets/videos/default-side_pull-fail-0.3x.mp4', import.meta.url).href },
+                    { title: 'Robust to Large Forces (0.3x)', src: new URL('@/assets/videos_compressed/facet-side_pull-success-0.3x.mp4', import.meta.url).href },
+                    { title: 'Failures of Baselines (0.3x)', src: new URL('@/assets/videos_compressed/default-side_pull-fail-0.3x.mp4', import.meta.url).href },
                 ],
                 [
-                    { title: 'Compliant Following', src: new URL('@/assets/videos/compliant_following.mp4', import.meta.url).href },
-                    { title: 'Large Force Pulling', src: new URL('@/assets/videos/large_force_pulling.mp4', import.meta.url).href },
+                    { title: 'Compliant Following', src: new URL('@/assets/videos_compressed/compliant_following.mp4', import.meta.url).href },
+                    { title: 'Large Force Pulling', src: new URL('@/assets/videos_compressed/large_force_pulling.mp4', import.meta.url).href },
                 ],
             ],
         }
