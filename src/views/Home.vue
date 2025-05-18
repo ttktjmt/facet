@@ -157,8 +157,10 @@
                 </v-col>
             </v-row>
 
+        </v-container>
+        <v-container class="py-12" id="online-demo">
             <v-row justify="center">
-                <v-col cols="12" md="10">
+                <v-col cols="12" md="10" class="text-center">
                     <p class="text-h4 text-center mb-6">Online Demo</p>
                     <!-- Technical Summary Video -->
                     <v-sheet color="grey lighten-2" class="d-flex align-center justify-center mt-6">
@@ -166,6 +168,13 @@
                             <source src="@/assets/videos/online_demo_1080p.mp4" type="video/mp4">
                         </LazyVideo>
                     </v-sheet>
+                    <div class="mt-6 mb-4 text-center text-h6">
+                        <strong>Experience FACET in Action! No installation required.</strong>
+                    </div>
+                    <v-btn color="primary" class="mx-auto" @click="openLiveDemo" large>
+                        <v-icon left>mdi-play-circle</v-icon>
+                        Play FACET in Your Browser
+                    </v-btn>
                 </v-col>
             </v-row>
         </v-container>
