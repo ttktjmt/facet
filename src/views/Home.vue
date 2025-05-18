@@ -160,12 +160,12 @@
         </v-container>
         <v-container class="py-12" id="online-demo">
             <v-row justify="center">
-                <v-col cols="12" md="10" class="text-center">
+                <v-col cols="12" md="10" lg="8" xl="6" class="text-center">
                     <p class="text-h4 text-center mb-6">Online Demo</p>
                     <!-- Technical Summary Video -->
                     <v-sheet color="grey lighten-2" class="d-flex align-center justify-center mt-6">
-                        <LazyVideo width="100%" height="100%" style="max-height: 100%" autoplay loop muted>
-                            <source src="@/assets/videos_compressed/online_demo_1080p.mp4" type="video/mp4">
+                        <LazyVideo width="100%" height="100%" autoplay loop muted>
+                            <source src="@/assets/videos/demo.mp4" type="video/mp4">
                         </LazyVideo>
                     </v-sheet>
                     <div class="mt-6 mb-4 text-center text-h6">
