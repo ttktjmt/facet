@@ -25,7 +25,7 @@
                 </div>
 
                 <!-- Live Demo Button -->
-                <div v-if="$vuetify.display.smAndUp" class="hero-cta" @click="openLiveDemo">
+                <div v-if="$vuetify.display.mdAndUp" class="hero-cta" @click="openLiveDemo">
                     <div class="gradient-mask"></div>
                     <div class="cta-content text-center">
                         <div style="width: 100%;">
@@ -40,11 +40,11 @@
                 <div style="position: relative; z-index: 3; height: 100%;">
                     <!-- Hero Content -->
                     <v-container class="d-flex flex-column justify-center align-center text-center"
-                        style="height: 100%;">
+                        style="height: 100%;" fluid>
                         <h1 style="font-size: 20vw; line-height: 0.95; user-select: none; -webkit-user-select: none; -ms-user-select: none;"
                             class="font-weight-light mb-4 text-white text-shadow">FACET
                         </h1>
-                        <h2 class="text-h2 font-weight-light mb-4 text-white text-shadow"
+                        <h2 class="text-h2 font-weight-light mb-8 text-white text-shadow"
                             style="font-size: 3.3vw !important;">
                             <span class="highlight-letter">F</span>orce-<span class="highlight-letter">A</span>daptive
                             <span class="highlight-letter">C</span>ontrol
@@ -53,24 +53,33 @@
                             <span class="highlight-letter">T</span>racking for
                             Legged Robots
                         </h2>
-                        <!-- <p class="text-h5">Enabling Natural and Safe Robot Interactions Through Advanced Control</p> -->
+                        <div>
+                            <v-row class="d-flex" style="flex-wrap: wrap;" justify="center">
+                                <v-col v-for="(link, index) in headerLinks" :key="index" cols="auto">
+                                    <v-btn color="primary" rounded :href="link.href" target="_blank" text :disabled="link.disabled">
+                                        <v-icon left>{{ link.icon }}</v-icon>
+                                        {{ link.text }}
+                                    </v-btn>
+                                </v-col>
+                            </v-row>
+                        </div>
                     </v-container>
                 </div>
 
                 <!-- Header -->
-                <div style="position: fixed; top: 20px; right: 20px; z-index: 10;">
-                    <v-fade-transition v-if="$vuetify.display.smAndUp">
-                        <v-btn v-if="!isHeroVisible" color="primary" class="mx-1" @click="openLiveDemo">
-                            <v-icon left>mdi-play-circle</v-icon>
-                            Play FACET
-                        </v-btn>
-                    </v-fade-transition>
-                    <v-btn v-for="(link, index) in headerLinks" :key="index" :href="link.href" target="_blank" text :disabled="link.disabled"
-                        class="mx-1">
-                        <v-icon left>{{ link.icon }}</v-icon>
-                        {{ link.text }}
-                    </v-btn>
-                </div>
+                 <v-fade-transition>
+                    <div v-if="$vuetify.display.mdAndUp && !isHeroVisible" style="position: fixed; top: 20px; right: 20px; z-index: 10;">
+                            <v-btn color="primary" class="mx-1" @click="openLiveDemo">
+                                <v-icon left>mdi-play-circle</v-icon>
+                                Play FACET
+                            </v-btn>
+                            <v-btn v-for="(link, index) in headerLinks" :key="index" :href="link.href" target="_blank" text :disabled="link.disabled"
+                                class="mx-1">
+                                <v-icon left>{{ link.icon }}</v-icon>
+                                {{ link.text }}
+                            </v-btn>
+                    </div>
+                </v-fade-transition>
             </v-container>
         </section>
 
@@ -165,11 +174,12 @@
                     <!-- Technical Summary Video -->
                     <v-sheet color="grey lighten-2" class="d-flex align-center justify-center mt-6">
                         <LazyVideo width="100%" height="100%" autoplay loop muted>
-                            <source src="@/assets/videos/demo.mp4" type="video/mp4">
+                            <source src="@/assets/videos_compressed/demo.mp4" type="video/mp4">
                         </LazyVideo>
                     </v-sheet>
                     <div class="mt-6 mb-4 text-center text-h6">
-                        <strong>Experience FACET in Action! No installation required.</strong>
+                        <strong>Experience FACET in Action! No installation required.</strong> <br/>
+                        <strong v-if="!$vuetify.display.smAndUp">Larger screen recommended.</strong>
                     </div>
                     <v-btn color="primary" class="mx-auto" @click="openLiveDemo" large>
                         <v-icon left>mdi-play-circle</v-icon>
