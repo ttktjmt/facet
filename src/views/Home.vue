@@ -56,7 +56,7 @@
                         <div>
                             <v-row class="d-flex" style="flex-wrap: wrap;" justify="center">
                                 <v-col v-for="(link, index) in headerLinks" :key="index" cols="auto">
-                                    <v-btn color="primary" rounded :href="link.href" target="_blank" text :disabled="link.disabled">
+                                    <v-btn color="primary" rounded :size="$vuetify.display.mdAndUp ? 'x-large' : 'default'" :href="link.href" target="_blank" text :disabled="link.disabled">
                                         <v-icon left>{{ link.icon }}</v-icon>
                                         {{ link.text }}
                                     </v-btn>
@@ -513,7 +513,7 @@ export default {
             headerLinks: [
                 // { text: 'PAPER', icon: 'mdi-file-pdf-box', href: 'https://github.com' },
                 { text: 'ARXIV', icon: 'mdi-file-document', href: 'https://arxiv.org/abs/2505.06883', disabled: false },
-                { text: 'VIDEO(Coming Soon)', icon: 'mdi-video', href: '#', disabled: true },
+                { text: 'VIDEO', icon: 'mdi-video', href: 'https://www.youtube.com/watch?v=T-hyKhv44yg&list=PLrCqEKTrDjGIK4JGnYhJh7SKP152IDDaK&index=2', disabled: false },
                 { text: 'CODE(Coming Soon)', icon: 'mdi-github', href: '#', disabled: true }
             ],
             show_step: 1,
