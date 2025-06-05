@@ -514,7 +514,7 @@ export default {
                 // { text: 'PAPER', icon: 'mdi-file-pdf-box', href: 'https://github.com' },
                 { text: 'ARXIV', icon: 'mdi-file-document', href: 'https://arxiv.org/abs/2505.06883', disabled: false },
                 { text: 'VIDEO', icon: 'mdi-video', href: 'https://www.youtube.com/watch?v=T-hyKhv44yg&list=PLrCqEKTrDjGIK4JGnYhJh7SKP152IDDaK&index=2', disabled: false },
-                { text: 'CODE(Coming Soon)', icon: 'mdi-github', href: '#', disabled: true }
+                { text: 'CODE', icon: 'mdi-github', href: 'https://github.com/btx0424/active-adaptation', disabled: false}
             ],
             show_step: 1,
             selectedSimVideo: 1,
