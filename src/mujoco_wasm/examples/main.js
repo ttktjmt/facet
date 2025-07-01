@@ -90,40 +90,35 @@ export class MuJoCoDemo {
     this.renderer.setAnimationLoop(this.render.bind(this));
 
     this.reloadScene = reloadScene.bind(this);
-    this.reloadPolicy = reloadPolicy.bind(this);
+    this.reloadPolicy = reloadPolicy.bind(this);    
   }
 
   async init() {
     // Download the examples first
     await downloadExampleScenesFolder(this.mujoco);
-
-    // Initialize the three.js Scene using the .xml Model
+    await this.reload();
+  }
+  
+  async reload() {
     await this.reloadScene();
-
+    // Initialize the three.js Scene using the .xml Model
     // Set up simulation parameters
     this.timestep = this.model.getOptions().timestep;
     this.decimation = Math.round(0.02 / this.timestep);
     this.mujoco_time = 0.0;
     this.simStepCount = 0;
     this.inferenceStepCount = 0;
-
+    
     console.log("timestep:", this.timestep, "decimation:", this.decimation);
-
+    
     this.adapt_hx = new Float32Array(128);
     this.rpy = new THREE.Euler();
-
-    // Reload policy
     await this.reloadPolicy();
-
-    this.jntKp = new Float32Array(this.numActions).fill(25.);
-    this.jntKd = new Float32Array(this.numActions).fill(0.5);
-
-    // this.gui = new GUI();
-    // setupGUI(this);
+    this.alive = true;
   }
 
   async main_loop() {
-    while (true) {
+    while (this.alive) {
       const loopStart = performance.now();
       if (!this.params["paused"] && this.model != null && this.state != null && this.simulation != null && this.observations != null) {
         let time_start = performance.now();
@@ -266,11 +261,11 @@ export class MuJoCoDemo {
 
         time_end = performance.now();
         const update_render_time = time_end - time_start;
-        if ((this.simStepCount) % (50 * this.decimation) == 0) {
-          console.log("policy inference time:", policy_inference_time / 1000);
-          console.log("sim_step_time:", sim_step_time / 1000);
-          console.log("update_render_time:", update_render_time / 1000)
-        }
+        // if ((this.simStepCount) % (50 * this.decimation) == 0) {
+        //   console.log("policy inference time:", policy_inference_time / 1000);
+        //   console.log("sim_step_time:", sim_step_time / 1000);
+        //   console.log("update_render_time:", update_render_time / 1000)
+        // }
       }
 
       // Calculate time to sleep
@@ -279,13 +274,13 @@ export class MuJoCoDemo {
       const sleepTime = Math.max(0, this.timestep * this.decimation - elapsed);
 
       // calculate actual frequency
-      if ((this.simStepCount) % (50 * this.decimation) == 0) {
-        const actualFreq = 1 / (elapsed + sleepTime);
-        console.log("elapsed", elapsed);
-        console.log("timestep", this.timestep);
-        console.log("sleepTime", sleepTime);
-        console.log("main loop frequency:", actualFreq);
-      }
+      // if ((this.simStepCount) % (50 * this.decimation) == 0) {
+      //   const actualFreq = 1 / (elapsed + sleepTime);
+      //   console.log("elapsed", elapsed);
+      //   console.log("timestep", this.timestep);
+      //   console.log("sleepTime", sleepTime);
+      //   console.log("main loop frequency:", actualFreq);
+      // }
 
       await new Promise(resolve => setTimeout(resolve, sleepTime * 1000));
     }

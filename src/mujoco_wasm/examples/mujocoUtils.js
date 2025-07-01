@@ -120,6 +120,9 @@ export async function reloadPolicy() {
   for (const [key, obsList] of Object.entries(config.obs_config)) {
     this.observations[key] = obsList.map(obsConfig => createObservation(obsConfig));
   }
+
+  this.jntKp = new Float32Array(this.numActions).fill(25.);
+  this.jntKd = new Float32Array(this.numActions).fill(0.5);
 }
 
 

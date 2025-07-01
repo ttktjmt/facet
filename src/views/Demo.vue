@@ -2,12 +2,13 @@
     <div id="mujoco-container">
         <!-- this is for placing the background demo -->
     </div>
-    <div style="position: fixed; top: 20px; right: 20px; z-index: 1000; width: 300px;">
+    <div style="position: fixed; top: 20px; right: 20px; z-index: 1000; width: 400px;">
         <v-card>
             <v-tabs v-model="task" bg-color="primary" @update:modelValue="updateTaskCallback()">
                 <v-tab value="1">Go2</v-tab>
-                <v-tab value="2">B1+Z1</v-tab>
-                <v-tab value="3">G1</v-tab>
+                <v-tab value="2">Go1</v-tab>
+                <v-tab value="3">B1+Z1</v-tab>
+                <v-tab value="4">G1</v-tab>
             </v-tabs>
 
             <v-tabs-window v-model="task">
@@ -136,6 +137,12 @@
                     </v-card-text>
                 </v-tabs-window-item>
 
+                <v-tabs-window-item value="4">
+                    <v-card-text>
+                        Release soon
+                    </v-card-text>
+                </v-tabs-window-item>
+
                 <!-- 
                 <v-tabs-window-item value="2">
                     <v-tabs v-model="policy" bg-color="primary" @update:modelValue="updatePolicyCallback()">
@@ -211,13 +218,15 @@ import load_mujoco from '@/mujoco_wasm/dist/mujoco_wasm.js';
 
 const tasks = {
     "1": "unitree_go2/scene.xml",
-    // "2": "unitree_go2/scene_wall.xml"
+    "2": "unitree_go1/go1.xml",
 }
 
 const policies = {
     "facet": "./examples/checkpoints/policy-05-03_21-31.json",
     "robust": "./examples/checkpoints/robust.json",
-    "vanilla": "./examples/checkpoints/vanilla.json"
+    "vanilla": "./examples/checkpoints/vanilla.json",
+    // "him":
+    // "decap":
 }
 
 export default {
@@ -254,14 +263,15 @@ export default {
                 console.error(error);
             }
         },
-        updateTaskCallback() {
-            return
+        async updateTaskCallback() {
+            if (this.task === "3" || this.task === "4") {
+                return;
+            }
             console.log(this.task);
-
-            this.demo.params["paused"] = true;
+            this.demo.alive = false;
             this.demo.params["scene"] = tasks[this.task];
-            this.demo.reloadScene();
-            this.demo.params["paused"] = false;
+            await this.demo.reload();
+            this.demo.main_loop();
         },
         updatePolicyCallback() {
             console.log(this.policy);
