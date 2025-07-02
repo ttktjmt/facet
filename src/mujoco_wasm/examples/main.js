@@ -96,11 +96,11 @@ export class MuJoCoDemo {
   async init() {
     // Download the examples first
     await downloadExampleScenesFolder(this.mujoco);
-    await this.reload();
+    await this.reload("unitree_go2/scene.xml", "./examples/checkpoints/go2/asset_meta.json");
   }
   
-  async reload() {
-    await this.reloadScene();
+  async reload(mjcf_path, meta_path) {
+    await this.reloadScene(mjcf_path, meta_path);
     // Initialize the three.js Scene using the .xml Model
     // Set up simulation parameters
     this.timestep = this.model.getOptions().timestep;

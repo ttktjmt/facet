@@ -4,15 +4,14 @@ import { MuJoCoDemo } from './main.js';
 import { Observations } from './observationHelpers.js';
 import { ONNXModule } from './onnxHelper.js';
 
-export async function reloadScene() {
+export async function reloadScene(mjcf_path, meta_path) {
   // Delete the old scene and load the new scene
   this.scene.remove(this.scene.getObjectByName("MuJoCo Root"));
   let mujoco = this.mujoco;
-  let sceneToLoad = this.params.scene;
-  console.log("Loading scene:", sceneToLoad);
+  console.log("Loading scene:", mjcf_path);
   // Initialize the three.js Scene using the .xml Model
   [this.model, this.state, this.simulation, this.bodies, this.lights] =
-    await loadSceneFromURL(mujoco, sceneToLoad, this);
+    await loadSceneFromURL(mujoco, mjcf_path, this);
 
   // Parse joint names and addresses in mujoco
   const textDecoder = new TextDecoder();
@@ -33,7 +32,8 @@ export async function reloadScene() {
   }
 
   // Load asset_meta.json
-  const asset_meta = await fetch("./examples/checkpoints/asset_meta.json").then(response => response.json());
+  const asset_meta = await fetch(meta_path).then(response => response.json());
+  // const asset_meta = await fetch("./examples/checkpoints/asset_meta.json").then(response => response.json());
   this.jointNamesIsaac = asset_meta["joint_names_isaac"];
 
   // find the actuator/qpos/qvel address for each isaac joint

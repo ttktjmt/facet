@@ -329,6 +329,82 @@ class PrevActions {
   }
 }
 
+
+class HIMLocoObs {
+  constructor(model, simulation, demo, kwargs = {}) {
+    this.model = model;
+    this.simulation = simulation;
+    this.demo = demo;
+    this.steps = 6;
+
+    this.commands_scale = [2.0, 2.0, 0.25];
+    this.ang_vel_scale = 0.25;
+    this.dof_pos_scale = 1.0;
+    this.dof_vel_scale = 0.05;
+
+    this.obs_buf = new Float32Array(this.steps * 45);
+  }
+
+  compute(extra_info) {
+    // Get current observations similar to Python compute_observations method
+    // commands[:, :3] * commands_scale
+    let commands = [1.0, 1.0, 0.0];
+    commands = commands.map((cmd, i) => cmd * this.commands_scale[i]);
+    // base_ang_vel * obs_scales.ang_vel
+    const base_ang_vel = this.demo.base_ang_vel.map(vel => vel * this.ang_vel_scale);
+    
+    const quat = this.simulation.qpos.subarray(this.joint_qpos_adr + 3, this.joint_qpos_adr + 7);
+    // Create quaternion directly from the array values
+    const quat_inv = new THREE.Quaternion(quat[1], quat[2], quat[3], quat[0]).invert();
+    const projected_gravity = new THREE.Vector3(0, 0, -1.0).applyQuaternion(quat_inv);
+        
+    const dof_pos = new Float32Array(12);
+    for (let i = 0; i < 12; i++) {
+      dof_pos[i] = (this.simulation.qpos[this.joint_qpos_adr[i]] - this.demo.defaultJpos[i]) * this.dof_pos_scale;
+    }
+    const dof_vel = new Float32Array(12);
+    for (let i = 0; i < 12; i++) {
+      dof_vel[i] = this.simulation.qvel[this.joint_qvel_adr[i]] * this.dof_vel_scale;
+    }
+    
+    // actions
+    const actions = this.demo.lastActions;
+    
+    // Concatenate all observations
+    let current_obs = [
+      ...commands,
+      ...base_ang_vel,
+      ...projected_gravity,
+      ...dof_pos,
+      ...dof_vel,
+      ...actions
+    ];
+    
+    // put current obs into obs_buf's first 45 elements
+    // first shift obs_buf's elements forward by 45 elements
+    for (let i = this.obs_buf.length - 1; i > 45; i--) {
+      this.obs_buf[i] = this.obs_buf[i - 45];
+    }
+    // then put current obs into obs_buf's first 45 elements
+    this.obs_buf.set(current_obs, 0);
+    return this.obs_buf;
+  }
+}
+
+
+class DecapObs {
+  constructor(model, simulation, demo, kwargs = {}) {
+    this.model = model;
+    this.simulation = simulation;
+    this.demo = demo;
+  }
+
+  compute(extra_info) {
+
+  }
+}
+
+
 // Export a dictionary of all observation classes
 export const Observations = {
   VelocityCommand,
@@ -337,6 +413,8 @@ export const Observations = {
   GravityMultistep,
   JointPosMultistep,
   JointVelMultistep,
-  PrevActions
+  PrevActions,
+  HIMLocoObs,
+  DecapObs
 };
 

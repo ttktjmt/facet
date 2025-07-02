@@ -217,8 +217,9 @@ import { MuJoCoDemo } from '@/mujoco_wasm/examples/main.js';
 import load_mujoco from '@/mujoco_wasm/dist/mujoco_wasm.js';
 
 const tasks = {
-    "1": "unitree_go2/scene.xml",
-    "2": "unitree_go1/go1.xml",
+    "1": ["unitree_go2/scene.xml", "./examples/checkpoints/go2/asset_meta.json"],
+    // "2": ["unitree_go2/scene.xml", "./examples/checkpoints/go2/asset_meta.json"],
+    "2": ["unitree_go1/go1.xml", "./examples/checkpoints/go1/asset_meta.json"],
 }
 
 const policies = {
@@ -269,8 +270,9 @@ export default {
             }
             console.log(this.task);
             this.demo.alive = false;
-            this.demo.params["scene"] = tasks[this.task];
-            await this.demo.reload();
+            const mjcf_path = tasks[this.task][0];
+            const meta_path = tasks[this.task][1];
+            await this.demo.reload(mjcf_path, meta_path);
             this.demo.main_loop();
         },
         updatePolicyCallback() {
