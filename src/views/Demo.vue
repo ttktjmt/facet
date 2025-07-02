@@ -126,9 +126,10 @@
                 </v-tabs-window-item>
 
                 <v-tabs-window-item value="2">
-                    <v-card-text>
-                        Release soon
-                    </v-card-text>
+                    <v-tabs v-model="policy" bg-color="primary" @update:modelValue="updatePolicyCallback()">
+                        <v-tab value="him">HIMLoco</v-tab>
+                        <v-tab value="decap">Decap</v-tab>
+                    </v-tabs>
                 </v-tabs-window-item>
 
                 <v-tabs-window-item value="3">
@@ -222,11 +223,16 @@ const tasks = {
     "2": ["unitree_go1/go1.xml", "./examples/checkpoints/go1/asset_meta.json"],
 }
 
+const default_policy = {
+    "1": "facet",
+    "2": "him",
+}
+
 const policies = {
     "facet": "./examples/checkpoints/policy-05-03_21-31.json",
     "robust": "./examples/checkpoints/robust.json",
     "vanilla": "./examples/checkpoints/vanilla.json",
-    // "him":
+    "him": "./examples/checkpoints/go1/go1_him.json",
     // "decap":
 }
 
@@ -272,7 +278,10 @@ export default {
             this.demo.alive = false;
             const mjcf_path = tasks[this.task][0];
             const meta_path = tasks[this.task][1];
-            await this.demo.reload(mjcf_path, meta_path);
+            const policy = default_policy[this.task];
+            await this.demo.reloadScene(mjcf_path, meta_path);
+            await this.demo.reloadPolicy(policy);
+            this.demo.alive = true;
             this.demo.main_loop();
         },
         updatePolicyCallback() {

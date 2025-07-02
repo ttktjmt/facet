@@ -18,9 +18,8 @@ export class MuJoCoDemo {
     this.mujoco = mujoco;
     mujoco.FS.mkdir('/working');
     mujoco.FS.mount(mujoco.MEMFS, { root: '.' }, '/working');
-    const initialScene = "unitree_go2/scene.xml";
 
-    this.params = { scene: initialScene, paused: true, help: false, policy: './examples/checkpoints/policy-05-03_21-31.json', command_vel_x: 0.0, impedance_kp: 24.0, use_setpoint: true, impulse_remain_time: 0.0, compliant_mode: false};
+    this.params = { paused: true, help: false, command_vel_x: 0.0, impedance_kp: 24.0, use_setpoint: true, impulse_remain_time: 0.0, compliant_mode: false};
     this.lastActions = null;
     this.isInferencing = false;
     this.observations = {}
@@ -96,11 +95,31 @@ export class MuJoCoDemo {
   async init() {
     // Download the examples first
     await downloadExampleScenesFolder(this.mujoco);
-    await this.reload("unitree_go2/scene.xml", "./examples/checkpoints/go2/asset_meta.json");
+    this.adapt_hx = new Float32Array(128);
+    this.rpy = new THREE.Euler();
+    // await this.reloadScene("unitree_go2/scene.xml", "./examples/checkpoints/go2/asset_meta.json");
+    // await this.reloadPolicy('./examples/checkpoints/policy-05-03_21-31.json');
+    await this.reloadScene("unitree_go1/go1.xml", "./examples/checkpoints/go1/asset_meta.json");
+    await this.reloadPolicy('./examples/checkpoints/go1/go1_him.json');
+    this.alive = true;
   }
   
   async reload(mjcf_path, meta_path) {
     await this.reloadScene(mjcf_path, meta_path);
+    await this.reloadScene(mjcf_path, meta_path);
+    // Initialize the three.js Scene using the .xml Model
+    // Set up simulation parameters
+    this.timestep = this.model.getOptions().timestep;
+    this.decimation = Math.round(0.02 / this.timestep);
+    this.mujoco_time = 0.0;
+    this.simStepCount = 0;
+    this.inferenceStepCount = 0;
+    
+    console.log("timestep:", this.timestep, "decimation:", this.decimation);
+    
+    this.adapt_hx = new Float32Array(128);
+    this.rpy = new THREE.Euler();
+    await this.reloadScene(mjcf_path, meta_path);    
     // Initialize the three.js Scene using the .xml Model
     // Set up simulation parameters
     this.timestep = this.model.getOptions().timestep;
@@ -118,6 +137,7 @@ export class MuJoCoDemo {
   }
 
   async main_loop() {
+    this.inputDict = this.policy.initInput();
     while (this.alive) {
       const loopStart = performance.now();
       if (!this.params["paused"] && this.model != null && this.state != null && this.simulation != null && this.observations != null) {
@@ -126,8 +146,15 @@ export class MuJoCoDemo {
         const quat = this.simulation.qpos.subarray(3, 7);
         this.quat = new THREE.Quaternion(quat[1], quat[2], quat[3], quat[0]);
         this.rpy.setFromQuaternion(this.quat);
-        const obs_dict = this.getObservations(this.simulation);
-        await this.runInference(obs_dict);
+        this.computeObservations(this.simulation);
+        
+        try {
+          await this.runInference();
+        } catch (e) {
+          console.error("Inference error in main loop:", e);
+          this.alive = false; // Break the while loop
+          break;
+        }
 
         let time_end = performance.now();
         const policy_inference_time = time_end - time_start;
@@ -286,7 +313,7 @@ export class MuJoCoDemo {
     }
   }
 
-  async runInference(obs_dict) {
+  async runInference() {
     if (!this.policy || this.isInferencing) {
       console.log("inference lag");
       return;
@@ -297,34 +324,19 @@ export class MuJoCoDemo {
     this.isInferencing = true;
     this.inferenceStepCount += 1;
     try {
-      // Create input object with initial tensors
-      const input = {
-        "is_init": new ort.Tensor('bool', [false], [1]),
-        "adapt_hx": new ort.Tensor('float32', this.adapt_hx, [1, 128])
-      };
-
-      // Convert observation arrays to tensors and add to input
-      for (const [key, value] of Object.entries(obs_dict)) {
-        input[key] = new ort.Tensor('float32', value, [1, value.length]);
+      const [result, carry] = await this.policy.runInference(this.inputDict);
+      const action = result["action"].data;
+      
+      for (let i = 0; i < this.lastActions.length; i++) {
+        this.lastActions[i] = this.lastActions[i] * 0.2 + action[i] * 0.8;
       }
-
-      const result = await this.policy.runInference(input);
-
-      if (this.lastActions !== null) {
-        for (let i = 0; i < this.lastActions.length; i++) {
-          this.lastActions[i] = this.lastActions[i] * 0.2 + result["action"][i] * 0.8;
-        }
-      } else {
-        this.lastActions = result["action"];
-      }
+      
       // console.log("lastActions", this.lastActions);
       for (let i = this.actionBuffer.length - 1; i > 0; i--) {
         this.actionBuffer[i] = this.actionBuffer[i - 1];
       }
       this.actionBuffer[0] = this.lastActions;
-      this.adapt_hx = result["next,adapt_hx"];
-    } catch (e) {
-      console.error("Failed to start inference:", e);
+      this.inputDict = carry;
     } finally {
       this.isInferencing = false;
     }
@@ -339,8 +351,7 @@ export class MuJoCoDemo {
     this.renderer.setSize(window.innerWidth, window.innerHeight);
   }
 
-  getObservations(simulation) {
-    let obs_dict = {};
+  computeObservations(simulation) {
     for (const [obs_key, obs_funcs] of Object.entries(this.observations)) {
       let obs_for_this_key = [];
       for (const obs_func of obs_funcs) {
@@ -350,9 +361,8 @@ export class MuJoCoDemo {
         }
         obs_for_this_key.push(...obs);
       }
-      obs_dict[obs_key] = obs_for_this_key;
+      this.inputDict[obs_key] = new ort.Tensor('float32', obs_for_this_key, [1, obs_for_this_key.length]);
     }
-    return obs_dict;
   }
 
   render() {

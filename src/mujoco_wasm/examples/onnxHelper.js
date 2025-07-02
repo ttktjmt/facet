@@ -10,6 +10,8 @@ export class ONNXModule {
   constructor(config) {
     this.modelPath = config.path;
     this.metaData = config.meta;
+    this.isRecurrent = config.meta.in_keys.includes("adapt_hx");
+    console.log("isRecurrent", this.isRecurrent);
   }
 
   async init() {
@@ -34,6 +36,17 @@ export class ONNXModule {
     console.log("outputNames", this.session.outputNames);
   }
 
+  initInput() {
+    if (this.isRecurrent) {
+      return {
+        "is_init": new ort.Tensor('bool', [true], [1]),
+        "adapt_hx": new ort.Tensor('float32', new Float32Array(128), [1, 128])
+      }
+    } else {
+      return {};
+    }
+  }
+
   async runInference(input) {
     // construct input
     let onnxInput = {};
@@ -45,8 +58,13 @@ export class ONNXModule {
     // construct output
     let result = {};
     for (let i = 0; i < this.outKeys.length; i++) {
-      result[this.outKeys[i]] = onnxOutput[this.session.outputNames[i]].data;
+      result[this.outKeys[i]] = onnxOutput[this.session.outputNames[i]];
     }
-    return result;
+    let carry = {};
+    if (this.isRecurrent) {
+      carry["is_init"] = new ort.Tensor('bool', [false], [1]);
+      carry["adapt_hx"] = result["next,adapt_hx"];
+    }
+    return [result, carry];
   }
 }

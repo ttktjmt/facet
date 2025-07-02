@@ -343,6 +343,19 @@ class HIMLocoObs {
     this.dof_vel_scale = 0.05;
 
     this.obs_buf = new Float32Array(this.steps * 45);
+
+    const { joint_names } = kwargs;
+    this.joint_qpos_adr = [];
+    this.joint_qvel_adr = [];
+    for (let i = 0; i < joint_names.length; i++) {
+      const idx = demo.jointNamesMJC.indexOf(joint_names[i]);
+      const joinqposadr = model.jnt_qposadr[idx];
+      this.joint_qpos_adr.push(joinqposadr);
+      const jointqveladr = model.jnt_dofadr[idx];
+      this.joint_qvel_adr.push(jointqveladr);
+    }
+    console.log("jposadr", this.joint_qpos_adr);
+    console.log("jveladr", this.joint_qvel_adr);
   }
 
   compute(extra_info) {
@@ -351,9 +364,13 @@ class HIMLocoObs {
     let commands = [1.0, 1.0, 0.0];
     commands = commands.map((cmd, i) => cmd * this.commands_scale[i]);
     // base_ang_vel * obs_scales.ang_vel
-    const base_ang_vel = this.demo.base_ang_vel.map(vel => vel * this.ang_vel_scale);
+    const base_ang_vel = (
+      this.simulation.qvel
+      .subarray(this.joint_qvel_adr, this.joint_qvel_adr + 3)
+      .map(vel => vel * this.ang_vel_scale)
+    );
     
-    const quat = this.simulation.qpos.subarray(this.joint_qpos_adr + 3, this.joint_qpos_adr + 7);
+    const quat = this.simulation.qpos.subarray(3, 7);
     // Create quaternion directly from the array values
     const quat_inv = new THREE.Quaternion(quat[1], quat[2], quat[3], quat[0]).invert();
     const projected_gravity = new THREE.Vector3(0, 0, -1.0).applyQuaternion(quat_inv);

@@ -65,10 +65,20 @@ export async function reloadScene(mjcf_path, meta_path) {
   this.defaultJpos = new Float32Array(asset_meta["default_joint_pos"]);
   this.numActions = this.jointNamesIsaac.length;
   this.actionBuffer = new Array(4).fill().map(() => new Float32Array(this.numActions));
+  this.lastActions = new Float32Array(this.numActions);
+
+  // Initialize the three.js Scene using the .xml Model
+  // Set up simulation parameters
+  this.timestep = this.model.getOptions().timestep;
+  this.decimation = Math.round(0.02 / this.timestep);
+  this.mujoco_time = 0.0;
+  this.simStepCount = 0;
+  this.inferenceStepCount = 0;
+  console.log("timestep:", this.timestep, "decimation:", this.decimation);
 
 }
 
-export async function reloadPolicy() {
+export async function reloadPolicy(policy_path) {
   console.log("Reloading policy:", this.params.policy);
 
   // Wait until inference is not running
@@ -78,7 +88,7 @@ export async function reloadPolicy() {
   }
 
   // Load policy config from JSON
-  const response = await fetch(this.params.policy);
+  const response = await fetch(policy_path);
   const config = await response.json();
 
   // Initialize ONNX model
