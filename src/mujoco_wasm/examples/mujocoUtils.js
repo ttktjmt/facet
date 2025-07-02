@@ -131,8 +131,9 @@ export async function reloadPolicy(policy_path) {
     this.observations[key] = obsList.map(obsConfig => createObservation(obsConfig));
   }
 
-  this.jntKp = new Float32Array(this.numActions).fill(25.);
-  this.jntKd = new Float32Array(this.numActions).fill(0.5);
+  this.action_scale = new Float32Array(this.numActions).fill(config.action_scale);
+  this.jntKp = new Float32Array(this.numActions).fill(config.stiffness);
+  this.jntKd = new Float32Array(this.numActions).fill(config.damping);
 }
 
 

@@ -25,5 +25,8 @@
                 "joint_names": "isaac"
             }
         ]
-    }
+    },
+    "action_scale": 0.25,
+    "stiffness": 40.0,
+    "damping": 1.0
 }

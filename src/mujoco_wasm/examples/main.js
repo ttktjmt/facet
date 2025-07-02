@@ -169,7 +169,7 @@ export class MuJoCoDemo {
               const qvel_adr = this.qvel_adr_isaac[i];
               const ctrl_adr = this.ctrl_adr_isaac[i];
 
-              const targetJpos = 0.5 * this.lastActions[i] + this.defaultJpos[i];
+              const targetJpos = this.action_scale[i] * this.lastActions[i] + this.defaultJpos[i];
               const torque = this.jntKp[i] * (targetJpos - this.simulation.qpos[qpos_adr]) + this.jntKd[i] * (0 - this.simulation.qvel[qvel_adr]);
               this.simulation.ctrl[ctrl_adr] = torque;
             }

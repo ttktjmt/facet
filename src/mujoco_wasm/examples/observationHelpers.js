@@ -105,7 +105,7 @@ class BaseAngVelMultistep {
 
     const joint_idx = demo.jointNamesMJC.indexOf(base_joint_name);
     this.joint_qvel_adr = model.jnt_dofadr[joint_idx];
-    console.log("joint_qvel_adr", this.joint_qvel_adr);
+    console.log("ang vel dof adr", this.joint_qvel_adr);
   }
 
   /**
@@ -336,6 +336,7 @@ class HIMLocoObs {
     this.simulation = simulation;
     this.demo = demo;
     this.steps = 6;
+    this.defaultJpos = demo.defaultJpos;
 
     this.commands_scale = [2.0, 2.0, 0.25];
     this.ang_vel_scale = 0.25;
@@ -361,12 +362,12 @@ class HIMLocoObs {
   compute(extra_info) {
     // Get current observations similar to Python compute_observations method
     // commands[:, :3] * commands_scale
-    let commands = [1.0, 1.0, 0.0];
+    let commands = [0.0, 0.0, 0.0];
     commands = commands.map((cmd, i) => cmd * this.commands_scale[i]);
     // base_ang_vel * obs_scales.ang_vel
     const base_ang_vel = (
       this.simulation.qvel
-      .subarray(this.joint_qvel_adr, this.joint_qvel_adr + 3)
+      .subarray(3, 6)
       .map(vel => vel * this.ang_vel_scale)
     );
     
@@ -377,7 +378,7 @@ class HIMLocoObs {
         
     const dof_pos = new Float32Array(12);
     for (let i = 0; i < 12; i++) {
-      dof_pos[i] = (this.simulation.qpos[this.joint_qpos_adr[i]] - this.demo.defaultJpos[i]) * this.dof_pos_scale;
+      dof_pos[i] = (this.simulation.qpos[this.joint_qpos_adr[i]] - this.defaultJpos[i]) * this.dof_pos_scale;
     }
     const dof_vel = new Float32Array(12);
     for (let i = 0; i < 12; i++) {
@@ -399,7 +400,7 @@ class HIMLocoObs {
     
     // put current obs into obs_buf's first 45 elements
     // first shift obs_buf's elements forward by 45 elements
-    for (let i = this.obs_buf.length - 1; i > 45; i--) {
+    for (let i = this.obs_buf.length - 1; i >= 45; i--) {
       this.obs_buf[i] = this.obs_buf[i - 45];
     }
     // then put current obs into obs_buf's first 45 elements
