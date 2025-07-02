@@ -97,10 +97,10 @@ export class MuJoCoDemo {
     await downloadExampleScenesFolder(this.mujoco);
     this.adapt_hx = new Float32Array(128);
     this.rpy = new THREE.Euler();
-    // await this.reloadScene("unitree_go2/scene.xml", "./examples/checkpoints/go2/asset_meta.json");
-    // await this.reloadPolicy('./examples/checkpoints/policy-05-03_21-31.json');
-    await this.reloadScene("unitree_go1/go1.xml", "./examples/checkpoints/go1/asset_meta.json");
-    await this.reloadPolicy('./examples/checkpoints/go1/go1_him.json');
+    await this.reloadScene("unitree_go2/scene.xml", "./examples/checkpoints/go2/asset_meta.json");
+    await this.reloadPolicy('./examples/checkpoints/policy-05-03_21-31.json');
+    // await this.reloadScene("unitree_go1/go1.xml", "./examples/checkpoints/go1/asset_meta.json");
+    // await this.reloadPolicy('./examples/checkpoints/go1/go1_him.json');
     this.alive = true;
   }
   
@@ -163,7 +163,7 @@ export class MuJoCoDemo {
         // step simulation for decimation times
         for (let substep = 0; substep < this.decimation; substep++) {
           // Apply control torque
-          if (this.lastActions) {
+          if (this.control_type == "joint_position") {
             for (let i = 0; i < this.numActions; i++) {
               const qpos_adr = this.qpos_adr_isaac[i];
               const qvel_adr = this.qvel_adr_isaac[i];
@@ -171,6 +171,12 @@ export class MuJoCoDemo {
 
               const targetJpos = this.action_scale[i] * this.lastActions[i] + this.defaultJpos[i];
               const torque = this.jntKp[i] * (targetJpos - this.simulation.qpos[qpos_adr]) + this.jntKd[i] * (0 - this.simulation.qvel[qvel_adr]);
+              this.simulation.ctrl[ctrl_adr] = torque;
+            }
+          } else if (this.control_type == "torque") {
+            for (let i = 0; i < this.numActions; i++) {
+              const ctrl_adr = this.ctrl_adr_isaac[i];
+              const torque = this.action_scale[i] * this.lastActions[i];
               this.simulation.ctrl[ctrl_adr] = torque;
             }
           }

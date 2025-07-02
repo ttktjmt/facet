@@ -233,7 +233,7 @@ const policies = {
     "robust": "./examples/checkpoints/robust.json",
     "vanilla": "./examples/checkpoints/vanilla.json",
     "him": "./examples/checkpoints/go1/go1_him.json",
-    // "decap":
+    "decap": "./examples/checkpoints/go1/go1_decap.json",
 }
 
 export default {
@@ -278,25 +278,22 @@ export default {
             this.demo.alive = false;
             const mjcf_path = tasks[this.task][0];
             const meta_path = tasks[this.task][1];
-            const policy = default_policy[this.task];
+            this.policy = default_policy[this.task];
             await this.demo.reloadScene(mjcf_path, meta_path);
-            await this.demo.reloadPolicy(policy);
-            this.demo.alive = true;
-            this.demo.main_loop();
+            this.updatePolicyCallback();
         },
-        updatePolicyCallback() {
+        async updatePolicyCallback() {
             console.log(this.policy);
-
-            this.demo.params["paused"] = true;
-            this.demo.params["policy"] = policies[this.policy];
-            this.demo.reloadPolicy();
+            this.demo.alive = false;
+            await this.demo.reloadPolicy(policies[this.policy]);
             if (this.policy === "facet") {
                 this.demo.ball.visible = true;
                 this.demo.ball.position.set(0, 0.5, 0);
             } else {
                 this.demo.ball.visible = false;
             }
-            this.demo.params["paused"] = false;
+            this.demo.alive = true;
+            this.demo.main_loop();
         },
         reset() {
             this.demo.params["paused"] = true;

@@ -134,6 +134,7 @@ export async function reloadPolicy(policy_path) {
   this.action_scale = new Float32Array(this.numActions).fill(config.action_scale);
   this.jntKp = new Float32Array(this.numActions).fill(config.stiffness);
   this.jntKd = new Float32Array(this.numActions).fill(config.damping);
+  this.control_type = config.control_type ?? "joint_position"; // Get control_type key with default "joint_position"
 }
 
 

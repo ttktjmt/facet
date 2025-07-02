@@ -415,10 +415,58 @@ class DecapObs {
     this.model = model;
     this.simulation = simulation;
     this.demo = demo;
+    this.defaultJpos = demo.defaultJpos;
+
+    this.commands_scale = [2.0, 2.0, 0.25];
+    this.ang_vel_scale = 0.25;
+    this.dof_pos_scale = 1.0;
+    this.dof_vel_scale = 0.05;
+
+    const { joint_names } = kwargs;
+    this.joint_qpos_adr = [];
+    this.joint_qvel_adr = [];
+    for (let i = 0; i < joint_names.length; i++) {
+      const idx = demo.jointNamesMJC.indexOf(joint_names[i]);
+      const joinqposadr = model.jnt_qposadr[idx];
+      this.joint_qpos_adr.push(joinqposadr);
+      const jointqveladr = model.jnt_dofadr[idx];
+      this.joint_qvel_adr.push(jointqveladr);
+    }
+    console.log("jposadr", this.joint_qpos_adr);
+    console.log("jveladr", this.joint_qvel_adr);
   }
 
   compute(extra_info) {
 
+    let commands = [0.0, 0.0, 0.0];
+    commands = commands.map((cmd, i) => cmd * this.commands_scale[i]);
+
+    const quat = this.simulation.qpos.subarray(3, 7);
+    // Create quaternion directly from the array values
+    const quat_inv = new THREE.Quaternion(quat[1], quat[2], quat[3], quat[0]).invert();
+    const projected_gravity = new THREE.Vector3(0, 0, -1.0).applyQuaternion(quat_inv);
+
+    const dof_pos = new Float32Array(12);
+    for (let i = 0; i < 12; i++) {
+      dof_pos[i] = (this.simulation.qpos[this.joint_qpos_adr[i]] - this.defaultJpos[i]) * this.dof_pos_scale;
+    }
+    const dof_vel = new Float32Array(12);
+    for (let i = 0; i < 12; i++) {
+      dof_vel[i] = this.simulation.qvel[this.joint_qvel_adr[i]] * this.dof_vel_scale;
+    }
+
+    // actions
+    const actions = this.demo.lastActions;
+
+    let obs = [
+      ...projected_gravity,
+      ...commands,
+      ...dof_pos,
+      ...dof_vel,
+      ...actions
+    ];
+
+    return obs;
   }
 }
 
