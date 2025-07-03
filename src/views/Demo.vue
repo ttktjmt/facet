@@ -130,6 +130,49 @@
                         <v-tab value="him">HIMLoco</v-tab>
                         <v-tab value="decap">Decap</v-tab>
                     </v-tabs>
+
+                    <v-tabs-window v-model="policy">
+                        <v-tabs-window-item value="him">
+                            <v-card-text>
+                                <div class="text-caption text-grey mb-2">
+                                    Slide to set command velocity
+                                </div>
+                                <v-slider v-model="command_vel_x" :min="-0.5" :max="1.5" :step="0.1" label="velocity"
+                                    hide-details @update:modelValue="updateCommandVelXCallback()">
+                                    <template v-slot:append>
+                                        <div class="text-caption">{{ command_vel_x }}</div>
+                                    </template>
+                                </v-slider>
+                            </v-card-text>
+                        </v-tabs-window-item>
+
+                        <v-tabs-window-item value="decap">
+                            <v-card-text>
+                                <div class="text-caption text-grey mb-2">
+                                    Slide to set command velocity
+                                </div>
+                                <v-slider v-model="command_vel_x" :min="-0.5" :max="1.5" :step="0.1" label="velocity"
+                                    hide-details @update:modelValue="updateCommandVelXCallback()">
+                                    <template v-slot:append>
+                                        <div class="text-caption">{{ command_vel_x }}</div>
+                                    </template>
+                                </v-slider>
+                            </v-card-text>
+                        </v-tabs-window-item>
+                    </v-tabs-window>
+
+                    <v-divider></v-divider>
+                    <!-- Force Controls Group -->
+                    <v-card-text class="pb-2">
+                        <div class="text-subtitle-2 mb-2">Force Controls</div>
+                        <div class="text-caption text-grey mb-2">
+                            Drag on the robot to apply force
+                        </div>
+                        <v-btn @click="StartImpulse" color="primary" block>Impulse</v-btn>
+                        <div class="text-caption text-grey mb-2">
+                            Click the button to apply an impulse
+                        </div>
+                    </v-card-text>
                 </v-tabs-window-item>
 
                 <v-tabs-window-item value="3">

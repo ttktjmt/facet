@@ -362,7 +362,8 @@ class HIMLocoObs {
   compute(extra_info) {
     // Get current observations similar to Python compute_observations method
     // commands[:, :3] * commands_scale
-    let commands = [0.0, 0.0, 0.0];
+    const command_vel_x = this.demo.params["command_vel_x"];
+    let commands = [command_vel_x, 0.0, 0.0];
     commands = commands.map((cmd, i) => cmd * this.commands_scale[i]);
     // base_ang_vel * obs_scales.ang_vel
     const base_ang_vel = (
@@ -438,7 +439,9 @@ class DecapObs {
 
   compute(extra_info) {
 
-    let commands = [0.0, 0.0, 0.0];
+    const command_vel_x = this.demo.params["command_vel_x"];
+    let commands = [command_vel_x, 0.0, 0.0];
+    console.log("decap commands", commands);
     commands = commands.map((cmd, i) => cmd * this.commands_scale[i]);
 
     const quat = this.simulation.qpos.subarray(3, 7);
