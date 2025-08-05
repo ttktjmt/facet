@@ -7,8 +7,6 @@
             <v-tabs v-model="task" bg-color="primary" @update:modelValue="updateTaskCallback()">
                 <v-tab value="1">Go2</v-tab>
                 <v-tab value="2">Go1</v-tab>
-                <v-tab value="3">B1+Z1</v-tab>
-                <v-tab value="4">G1</v-tab>
             </v-tabs>
 
             <v-tabs-window v-model="task">
@@ -175,18 +173,6 @@
                     </v-card-text>
                 </v-tabs-window-item>
 
-                <v-tabs-window-item value="3">
-                    <v-card-text>
-                        Release soon
-                    </v-card-text>
-                </v-tabs-window-item>
-
-                <v-tabs-window-item value="4">
-                    <v-card-text>
-                        Release soon
-                    </v-card-text>
-                </v-tabs-window-item>
-
                 <!-- 
                 <v-tabs-window-item value="2">
                     <v-tabs v-model="policy" bg-color="primary" @update:modelValue="updatePolicyCallback()">
@@ -252,7 +238,6 @@ import load_mujoco from '@/mujoco_wasm/dist/mujoco_wasm.js';
 
 const tasks = {
     "1": ["unitree_go2/scene.xml", "./examples/checkpoints/go2/asset_meta.json"],
-    // "2": ["unitree_go2/scene.xml", "./examples/checkpoints/go2/asset_meta.json"],
     "2": ["unitree_go1/go1.xml", "./examples/checkpoints/go1/asset_meta.json"],
 }
 
