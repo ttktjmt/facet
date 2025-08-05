@@ -223,16 +223,6 @@
             <v-btn @click="reset" block text tile>Reset</v-btn>
         </v-card>
     </div>
-        <!-- 左上角返回主页按钮 -->
-    <div style="position: fixed; top: 20px; left: 20px; z-index: 1000;">
-        <v-btn
-            color="primary"
-            @click="goHome"
-            elevation="2"
-        >
-            <v-icon>mdi-arrow-left</v-icon>Go back
-        </v-btn>
-    </div>
     <v-dialog :model-value="state === 0" persistent max-width="600px" scrollable>
         <v-card title="Loading Simulation Environment">
             <v-card-text>
@@ -376,9 +366,6 @@ export default {
         StartImpulse() {
             console.log("start impulse");
             this.demo.params["impulse_remain_time"] = 0.1;
-        },
-        goHome() {
-            this.$router.push({ path: '/' });
         },
     },
     mounted() {

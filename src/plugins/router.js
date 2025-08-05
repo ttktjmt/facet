@@ -1,19 +1,15 @@
 // plugins/router.js
 import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router'
-import Home from '@/views/Home.vue'
+// import Home from '@/views/Home.vue' // Removed Home import
 import Demo from '@/views/Demo.vue'
 
 const routes = [
     {
         path: '/',
-        name: 'Home',
-        component: Home,
-    },
-    {
-        path: '/demo',
         name: 'Demo',
         component: Demo,
-    }
+    },
+    // Removed /demo route, Demo is now root
 ]
 
 const router = createRouter({
